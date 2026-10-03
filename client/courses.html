@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Courses - CampusConnect</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Navbar and Sidebar logic (simplified for brevity, usually you'd use a template engine, but here we duplicate standard structure) -->
+  <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand" href="dashboard.html"><i class="fa-solid fa-graduation-cap me-2"></i>CampusConnect</a>
+      <div class="d-flex align-items-center">
+        <a href="index.html" class="btn btn-sm btn-outline-secondary me-3"><i class="fa-solid fa-house"></i> Home</a>
+        <span class="me-3 fw-medium text-secondary user-name">Student</span>
+        <button id="logoutBtn" class="btn btn-outline-danger btn-sm">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-2 d-none d-md-block sidebar px-0">
+        <div class="nav flex-column">
+          <a class="nav-link" href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+          <a class="nav-link active" href="courses.html"><i class="fa-solid fa-book"></i> Courses</a>
+          <a class="nav-link" href="timetable.html"><i class="fa-solid fa-calendar-days"></i> Timetable</a>
+          <a class="nav-link" href="bookings.html"><i class="fa-solid fa-building"></i> Facilities</a>
+          <a class="nav-link" href="complaints.html"><i class="fa-solid fa-comment-dots"></i> Complaints</a>
+          <a class="nav-link" href="announcements.html"><i class="fa-solid fa-bullhorn"></i> Announcements</a>
+        </div>
+      </div>
+
+      <div class="col-md-10 dashboard-content bg-light">
+        <div id="alertContainer"></div>
+        
+        <ul class="nav nav-pills mb-4" id="courseTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active fw-bold" id="all-tab" data-bs-toggle="tab" data-bs-target="#all-courses" type="button">All Courses</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link fw-bold" id="my-tab" data-bs-toggle="tab" data-bs-target="#my-courses" type="button">My Enrollments</button>
+          </li>
+        </ul>
+
+        <div class="tab-content" id="courseTabContent">
+          <div class="tab-pane fade show active" id="all-courses" role="tabpanel">
+            <div class="card border-0 shadow-sm">
+              <div class="card-header bg-white pt-4 pb-0 border-bottom-0 d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold mb-0">Course Catalog</h5>
+                <div class="input-group" style="width: 300px;">
+                  <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-search text-muted"></i></span>
+                  <input type="text" id="courseSearch" class="form-control border-start-0 bg-light" placeholder="Search by code or title...">
+                </div>
+              </div>
+              <div class="card-body mt-3">
+                <div class="table-responsive">
+                  <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Code</th>
+                        <th>Title</th>
+                        <th>Instructor</th>
+                        <th>Credits</th>
+                        <th>Capacity</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="allCoursesTable">
+                      <tr><td colspan="6" class="text-center">Loading...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="tab-pane fade" id="my-courses" role="tabpanel">
+            <div class="card">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Code</th>
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="myCoursesTable">
+                      <tr><td colspan="4" class="text-center">Loading...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    $(document).ready(function() {
+      loadCourses();
+      loadMyCourses();
+
+      function loadCourses() {
+        API.getCourses().done(res => {
+          let html = '';
+          res.data.forEach(c => {
+            const isFull = c.enrolledCount >= c.capacity;
+            html += `<tr>
+              <td class="fw-bold">${c.courseCode}</td>
+              <td>${c.title}</td>
+              <td>${c.instructor}</td>
+              <td>${c.credits}</td>
+              <td>${c.enrolledCount}/${c.capacity}</td>
+              <td>
+                <button class="btn btn-sm btn-primary enroll-btn" data-id="${c._id}" ${isFull ? 'disabled' : ''}>
+                  ${isFull ? 'Full' : 'Enroll'}
+                </button>
+              </td>
+            </tr>`;
+          });
+          $('#allCoursesTable').html(html);
+        });
+      }
+
+      function loadMyCourses() {
+        API.getMyEnrollments().done(res => {
+          let html = '';
+          if(res.data.length === 0) html = '<tr><td colspan="4" class="text-center">No enrollments yet.</td></tr>';
+          res.data.forEach(e => {
+            if(!e.courseId) return;
+            html += `<tr>
+              <td class="fw-bold">${e.courseId.courseCode}</td>
+              <td>${e.courseId.title}</td>
+              <td><span class="badge bg-success">${e.status}</span></td>
+              <td>
+                <button class="btn btn-sm btn-danger drop-btn" data-id="${e.courseId._id}">Drop</button>
+              </td>
+            </tr>`;
+          });
+          $('#myCoursesTable').html(html);
+        });
+      }
+
+      $(document).on('click', '.enroll-btn', function() {
+        const id = $(this).data('id');
+        API.enrollCourse(id).done(res => {
+          showAlert(res.message, 'success');
+          loadCourses();
+          loadMyCourses();
+        }).fail(err => {
+          showAlert(err.responseJSON?.message || 'Error enrolling', 'danger');
+        });
+      });
+
+      $(document).on('click', '.drop-btn', function() {
+        if(!confirm('Are you sure you want to drop this course?')) return;
+        const id = $(this).data('id');
+        API.dropCourse(id).done(res => {
+          showAlert(res.message, 'success');
+          loadCourses();
+          loadMyCourses();
+        }).fail(err => {
+          showAlert(err.responseJSON?.message || 'Error dropping', 'danger');
+        });
+      });
+      
+      // Live Search Feature
+      $('#courseSearch').on('keyup', function() {
+        const value = $(this).val().toLowerCase();
+        $('#allCoursesTable tr').filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+  </script>
+</body>
+</html>

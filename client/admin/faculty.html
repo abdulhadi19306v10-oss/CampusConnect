@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Faculty - CampusConnect</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand" href="dashboard.html"><i class="fa-solid fa-graduation-cap me-2"></i>CampusConnect Admin</a>
+      <div class="d-flex align-items-center">
+        <a href="../index.html" class="btn btn-sm btn-outline-secondary me-3"><i class="fa-solid fa-house"></i> Home</a>
+        <span class="me-3 fw-medium text-secondary user-name">Admin</span>
+        <button id="logoutBtn" class="btn btn-outline-danger btn-sm">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-2 d-none d-md-block sidebar px-0">
+        <div class="nav flex-column">
+          <a class="nav-link" href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+          <a class="nav-link" href="students.html"><i class="fa-solid fa-users"></i> Students</a>
+          <a class="nav-link" href="faculty.html"><i class="fa-solid fa-chalkboard-user"></i> Faculty</a>
+          <a class="nav-link" href="courses.html"><i class="fa-solid fa-book"></i> Courses</a>
+          <a class="nav-link" href="bookings.html"><i class="fa-solid fa-building"></i> Bookings</a>
+          <a class="nav-link" href="complaints.html"><i class="fa-solid fa-comment-dots"></i> Complaints</a>
+          <a class="nav-link" href="announcements.html"><i class="fa-solid fa-bullhorn"></i> Announcements</a>
+        </div>
+      </div>
+
+      <div class="col-md-10 dashboard-content bg-light">
+        <div class="card">
+          <div class="card-header bg-white pt-4 pb-0 border-bottom-0 d-flex justify-content-between align-items-center">
+            <h5 class="fw-bold mb-0">Faculty Directory</h5>
+            <button class="btn btn-primary-gradient rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#addFacultyModal">
+              <i class="fa-solid fa-plus me-2"></i>Add Faculty
+            </button>
+          </div>
+          <div class="card-body mt-3">
+            <div id="alertContainer"></div>
+            
+            <div class="mb-3 d-flex justify-content-end table-search-container">
+              <div class="input-group" style="width: 250px;">
+                <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-search text-muted"></i></span>
+                <input type="text" class="form-control border-start-0 bg-light page-search" placeholder="Search...">
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Department</th>
+                    <th>Title (e.g. Professor)</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="facultyTable">
+                  <tr><td colspan="5" class="text-center">Loading...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- Edit Faculty Modal -->
+  <div class="modal fade" id="editFacultyModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header border-bottom-0">
+          <h5 class="modal-title fw-bold">Edit Faculty</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editFacultyForm">
+            <input type="hidden" name="id" id="editFacultyId">
+            <div class="mb-3">
+              <label class="form-label text-muted fw-semibold">Full Name</label>
+              <input type="text" name="name" id="editFacultyName" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-muted fw-semibold">Email</label>
+              <input type="email" name="email" id="editFacultyEmail" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-muted fw-semibold">Department</label>
+              <input type="text" name="department" id="editFacultyDepartment" class="form-control">
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-muted fw-semibold">Title (e.g. Professor)</label>
+              <input type="text" name="title" id="editFacultyTitle" class="form-control" >
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-muted fw-semibold">New Password (Leave blank to keep current)</label>
+              <input type="password" name="password" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-warning w-100 rounded-pill mt-3 py-2 text-dark fw-bold">Save Changes</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Faculty Modal -->
+  <div class="modal fade" id="addFacultyModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header border-bottom-0">
+          <h5 class="modal-title fw-bold">Register New Faculty</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addFacultyForm">
+            <div class="mb-3">
+              <label class="form-label text-muted fw-semibold">Full Name</label>
+              <input type="text" name="name" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-muted fw-semibold">Email</label>
+              <input type="email" name="email" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-muted fw-semibold">Password</label>
+              <input type="password" name="password" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-muted fw-semibold">Employee ID</label>
+              <input type="text" name="studentId" class="form-control">
+            </div>
+            <div class="row">
+              <div class="col-6 mb-3">
+                <label class="form-label text-muted fw-semibold">Department</label>
+                <input type="text" name="department" class="form-control">
+              </div>
+              <div class="col-6 mb-3">
+                <label class="form-label text-muted fw-semibold">Title (e.g. Professor)</label>
+                <input type="text" name="title" class="form-control" placeholder="Professor">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary-gradient w-100 rounded-pill mt-3 py-2">Create Faculty Account</button>
+          <input type="hidden" name="role" value="FACULTY">
+</form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script>
+    $(document).ready(function() {
+      function loadFaculty() {
+        API.getFaculty().done(res => {
+          let html = '';
+          res.data.forEach(s => {
+            html += `<tr>
+              <td class="fw-bold">${s.studentId || '-'}</td>
+              <td>${s.name}</td>
+              <td>${s.email}</td>
+              <td>${s.department || '-'}</td>
+              
+              <td>${s.title || '-'}</td>
+              <td>
+                <button class="btn btn-sm btn-outline-primary edit-faculty-btn me-1" 
+                  data-id="${s._id}" 
+                  data-name="${s.name}" 
+                  data-email="${s.email}" 
+                  data-department="${s.department || ''}" 
+                  data-title="${s.title || ''}">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger delete-user-btn" data-id="${s._id}">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </td>
+            </tr>`;
+          });
+          $('#facultyTable').html(html);
+        });
+      }
+      
+      loadFaculty();
+
+      $('#addFacultyForm').submit(function(e) {
+        e.preventDefault();
+        const data = $(this).serialize();
+        API.register(data).done(res => {
+          showAlert('Faculty registered successfully!', 'success');
+          $('#addFacultyModal').modal('hide');
+          this.reset();
+          loadFaculty();
+        }).fail(err => {
+          showAlert(err.responseJSON?.message || 'Error creating faculty', 'danger');
+        });
+      });
+    
+      // edit-user-logic
+      $(document).on('click', '.edit-faculty-btn', function() {
+        const btn = $(this);
+        $('#editFacultyId').val(btn.data('id'));
+        $('#editFacultyName').val(btn.data('name'));
+        $('#editFacultyEmail').val(btn.data('email'));
+        $('#editFacultyDepartment').val(btn.data('department'));
+        $('#editFacultyTitle').val(btn.data('semester'));
+        $('#editFacultyModal').modal('show');
+      });
+
+      $('#editFacultyForm').submit(function(e) {
+        e.preventDefault();
+        const rawData = $(this).serializeArray();
+        const data = {};
+        rawData.forEach(item => {
+            if (item.value) data[item.name] = item.value;
+        });
+        
+        const id = data.id;
+        delete data.id; // don't send id in body
+
+        API.updateUser(id, data).done(res => {
+          showAlert('Faculty updated successfully!', 'success');
+          $('#editFacultyModal').modal('hide');
+          this.reset();
+          loadFaculty();
+        }).fail(err => {
+          showAlert(err.responseJSON?.message || 'Error updating faculty', 'danger');
+        });
+      });
+
+      $(document).on('click', '.delete-user-btn', function() {
+        if(!confirm('Are you sure you want to completely delete this user? This cannot be undone.')) return;
+        const id = $(this).data('id');
+        API.deleteUser(id).done(res => {
+          showAlert('User deleted successfully!', 'success');
+          loadFaculty();
+        }).fail(err => {
+          showAlert(err.responseJSON?.message || 'Error deleting user', 'danger');
+        });
+      });
+    
+    });
+  </script>
+
+  <script>
+    $(document).ready(function() {
+      // Global Table Live Search
+      $('.page-search').on('keyup', function() {
+        const value = $(this).val().toLowerCase();
+        // find the closest table-responsive container which is a sibling of the search container
+        $(this).closest('.table-search-container').next('.table-responsive').find('tbody tr').filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+import os
+
+# Create the LMS Faculty Dashboard
+html_content = """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Faculty LMS Dashboard - CampusConnect</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand" href="dashboard.html"><i class="fa-solid fa-graduation-cap me-2"></i>CampusConnect LMS</a>
+      <div class="d-flex align-items-center">
+        <a href="../index.html" class="btn btn-sm btn-outline-secondary me-3"><i class="fa-solid fa-house"></i> Home</a>
+        <span class="me-3 fw-medium text-secondary user-name">Professor</span>
+        <button id="logoutBtn" class="btn btn-outline-danger btn-sm">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-2 d-none d-md-block sidebar px-0">
+        <div class="nav flex-column">
+          <a class="nav-link active" href="dashboard.html"><i class="fa-solid fa-chalkboard-user"></i> LMS Home</a>
+          <a class="nav-link" href="#"><i class="fa-solid fa-book"></i> Course Materials</a>
+          <a class="nav-link" href="#"><i class="fa-solid fa-users"></i> Student Roster</a>
+          <a class="nav-link" href="#"><i class="fa-solid fa-file-signature"></i> Gradebook</a>
+        </div>
+      </div>
+
+      <div class="col-md-10 dashboard-content bg-light">
+        <div id="alertContainer"></div>
+        <h2 class="fw-bold mb-4">LMS Dashboard - Welcome back, <span class="user-name text-primary">Professor</span>!</h2>
+        
+        <div class="row g-4 mb-5">
+          <div class="col-lg-8">
+            <div class="card h-100 border-0 shadow-sm">
+              <div class="card-header bg-white pt-4 pb-0 border-bottom-0 d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold mb-0"><i class="fa-solid fa-laptop-file text-primary me-2"></i>My Assigned Courses</h5>
+              </div>
+              <div class="card-body mt-3">
+                <div class="table-responsive">
+                  <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Code</th>
+                        <th>Title</th>
+                        <th>Credits</th>
+                        <th>Enrolled</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="myCoursesTable">
+                      <tr><td colspan="5" class="text-center">Loading courses...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+             <div class="card p-4 h-100 border-0 shadow-sm bg-gradient text-white" style="background: linear-gradient(135deg, #4f46e5, #3b82f6);">
+                <h5 class="fw-bold mb-3"><i class="fa-solid fa-bullhorn text-warning me-2"></i>Post Course Announcement</h5>
+                <p class="small text-white-50 mb-4">Instantly notify all students in your department.</p>
+                
+                <form id="postAnnouncementForm">
+                  <div class="mb-3">
+                    <input type="text" name="title" class="form-control bg-light border-0" placeholder="Announcement Title" required>
+                  </div>
+                  <div class="mb-3">
+                    <select name="category" class="form-select bg-light border-0">
+                      <option value="ACADEMIC">Academic / Course Update</option>
+                      <option value="EVENT">Exam / Quiz Notification</option>
+                      <option value="GENERAL">General Notice</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <textarea name="content" class="form-control bg-light border-0" rows="3" placeholder="Message details..." required></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-warning w-100 fw-bold text-dark rounded-pill">Publish to Students</button>
+                </form>
+             </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script>
+    $(document).ready(function() {
+      // Load Faculty's Courses
+      const currentUser = JSON.parse(localStorage.getItem('user'));
+      
+      API.getCourses().done(res => {
+        let html = '';
+        // Filter courses where the instructor matches the faculty's name
+        const myCourses = res.data.filter(c => c.instructor === currentUser.name);
+        
+        if(myCourses.length === 0) {
+           html = '<tr><td colspan="5" class="text-center text-muted">No courses assigned to you yet.</td></tr>';
+        } else {
+           myCourses.forEach(c => {
+             html += `<tr>
+               <td class="fw-bold text-primary">${c.courseCode}</td>
+               <td>${c.title}</td>
+               <td>${c.credits}</td>
+               <td><span class="badge bg-success">${c.enrolledCount} / ${c.capacity}</span></td>
+               <td>
+                 <button class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-users"></i> View Roster</button>
+               </td>
+             </tr>`;
+           });
+        }
+        $('#myCoursesTable').html(html);
+      });
+
+      // Handle Announcement Posting
+      $('#postAnnouncementForm').submit(function(e) {
+        e.preventDefault();
+        const data = $(this).serialize();
+        // Uses the regular /api/announcements endpoint (now secured for both Admin and Faculty)
+        $.post('/api/announcements', data).done(res => {
+          showAlert('Announcement published successfully to all students!', 'success');
+          this.reset();
+        }).fail(err => {
+          showAlert(err.responseJSON?.message || 'Error publishing announcement', 'danger');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
+"""
+
+with open('client/faculty/dashboard.html', 'w') as f:
+    f.write(html_content)
+
+print("Faculty LMS Dashboard created!")
