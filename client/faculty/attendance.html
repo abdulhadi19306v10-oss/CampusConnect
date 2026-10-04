@@ -2,219 +2,614 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Attendance - CampusConnect Faculty</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance Terminal — CampusConnect Faculty</title>
+  
+  <!-- Bootstrap 5 & FontAwesome -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Editorial Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Design System CSS -->
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container-fluid px-4">
-      <a class="navbar-brand" href="dashboard.html"><i class="fa-solid fa-graduation-cap me-2"></i>CampusConnect Faculty</a>
-      <div class="d-flex align-items-center">
-        <a href="../index.html" class="btn btn-sm btn-outline-secondary me-3"><i class="fa-solid fa-house"></i> Home</a>
-        <span class="me-3 fw-medium text-secondary user-name">Professor</span>
-        <button id="logoutBtn" class="btn btn-outline-danger btn-sm">Logout</button>
+      <a class="navbar-brand" href="dashboard.html">
+        <div class="brand-icon-editorial" style="background-color: var(--brand-terracotta);">
+          <i class="fa-solid fa-chalkboard-user"></i>
+        </div>
+        CampusConnect <span class="font-sans fw-normal text-muted ms-2" style="font-size: 1rem;">Faculty Portal</span>
+      </a>
+      
+      <div class="d-flex align-items-center gap-3">
+        <span class="mono-tag bg-white text-muted border d-none d-sm-inline-block">Attendance Terminal</span>
+        <span class="fw-semibold text-dark user-name small d-none d-md-inline">Professor</span>
+        <button id="logoutBtn" class="btn-editorial-outline btn-sm py-1 px-3" style="font-size: 0.82rem;">Logout</button>
       </div>
     </div>
   </nav>
 
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-2 d-none d-md-block sidebar px-0">
+      <!-- Sidebar -->
+      <div class="col-md-2 d-none d-md-block sidebar-editorial">
         <div class="nav flex-column">
-          <a class="nav-link " href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
-          <a class="nav-link " href="courses.html"><i class="fa-solid fa-book"></i> Course Manager</a>
-          <a class="nav-link active" href="attendance.html"><i class="fa-solid fa-clipboard-user"></i> Attendance</a>
-          <a class="nav-link " href="announcements.html"><i class="fa-solid fa-bullhorn"></i> Announcements</a>
+          <a class="nav-link" href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Overview</a>
+          <a class="nav-link" href="courses.html"><i class="fa-solid fa-book-bookmark"></i> Course Roster</a>
+          <a class="nav-link active" href="attendance.html"><i class="fa-solid fa-clipboard-user"></i> Attendance Terminal</a>
+          <a class="nav-link" href="announcements.html"><i class="fa-solid fa-bullhorn"></i> Course Notices</a>
+        </div>
+
+        <div class="p-3 mt-4 rounded-3 border bg-white">
+          <small class="text-muted d-block text-uppercase fw-bold" style="font-size: 0.7rem;">Quick Shortcut</small>
+          <p class="small text-muted mb-2 mt-1">Export class roster reports and monitor exam eligibility thresholds.</p>
+          <a href="courses.html" class="btn-editorial-outline btn-sm w-100 py-1" style="font-size: 0.75rem;">
+            <i class="fa-solid fa-users me-1"></i> View All Sections
+          </a>
         </div>
       </div>
 
-      <div class="col-md-10 dashboard-content bg-light">
+      <!-- Main Content -->
+      <div class="col-md-10 p-4 p-md-5">
         <div id="alertContainer"></div>
-        
-        <h2 class="fw-bold mb-4">Attendance Sheets</h2>
-        
-        <div class="row g-4 mb-4">
-            <div class="col-md-12">
-                <div class="card border-0 shadow-sm">
-                  <div class="card-header bg-white pt-4 pb-0 border-bottom-0 d-flex justify-content-between align-items-center">
-                    <div>
-                        <h5 class="fw-bold mb-1">Live Attendance</h5>
-                        <p class="text-muted small mb-0">Select a course and date to view and update the student roster</p>
-                    </div>
-                    <div class="d-flex gap-2">
-                        <input type="date" class="form-control fw-bold border-secondary bg-light" id="attendanceDate">
-                        <select class="form-select w-auto fw-bold text-primary border-primary bg-light" id="attendanceCourseSelect">
-                            <option>Loading assigned courses...</option>
-                        </select>
-                    </div>
-                  </div>
-                  <div class="card-body mt-3">
-                    <div class="table-responsive">
-                      <table class="table table-hover align-middle">
-                        <thead class="table-light">
-                          <tr>
-                            <th>Student Name</th>
-                            <th>Email</th>
-                            <th>Total Stats</th>
-                            <th>Status (Today)</th>
-                            <th>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody id="attendanceList">
-                          <!-- Filled by JS -->
-                        </tbody>
-                      </table>
-                    </div>
-                    <div class="d-flex justify-content-end mt-3 gap-2">
-                        
-                        <button class="btn btn-success fw-bold px-4" id="saveAttendanceBtn"><i class="fa-solid fa-floppy-disk me-2"></i>Save Attendance</button>
-                    </div>
-                  </div>
-                </div>
-            </div>
+
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-2 border-bottom border-light-subtle gap-3">
+          <div>
+            <span class="mono-tag" style="background: var(--brand-terracotta-light); color: var(--brand-terracotta);">Lecture Roster & Compliance</span>
+            <h1 class="font-serif display-6 mb-1 fw-bold mt-1">Class Attendance Terminal</h1>
+            <p class="text-muted small mb-0">Record daily class participation, monitor 75% examination eligibility thresholds, and export analytics.</p>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn-editorial-outline btn-sm px-3 py-2" id="viewHistoryBtn" data-bs-toggle="modal" data-bs-target="#sessionHistoryModal" disabled>
+              <i class="fa-solid fa-clock-rotate-left me-1"></i> Session History
+            </button>
+            <button class="btn-editorial-primary btn-sm px-3 py-2" id="exportCsvBtn" disabled>
+              <i class="fa-solid fa-file-csv me-1"></i> Export Roster CSV
+            </button>
+          </div>
         </div>
 
-        
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        setTimeout(() => {
-            const currentUser = JSON.parse(localStorage.getItem('user'));
-            if(!currentUser) return;
-            
-            // Initialize Date Picker to Today
-            document.getElementById('attendanceDate').valueAsDate = new Date();
-            
-            // 1. Load Courses
-            API.getCourses().done(res => {
-                const myCourses = res.data.filter(c => c.instructor === currentUser.name);
-                let options = '<option value="">-- Select a Course --</option>';
-                myCourses.forEach(c => {
-                     options += `<option value="${c._id}">${c.courseCode} - ${c.title}</option>`;
-                });
-                $('#attendanceCourseSelect').html(options);
-            });
-            
-            // 2. Fetch Enrolled Students when a course is selected
-            $('#attendanceCourseSelect').change(function() {
-                const courseId = $(this).val();
-                if(!courseId) {
-                    $('#attendanceList').html('');
-                    return;
-                }
-                
-                $('#attendanceList').html('<tr><td colspan="4" class="text-center">Loading students...</td></tr>');
-                
-                $.get(`/api/courses/${courseId}/students`, {
-                   headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') } 
-                }).done(res => {
-                    // Fetch stats too
-                    $.get(`/api/attendance/course/${courseId}/stats`, {
-                        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') } 
-                    }).done(statsRes => {
-                        const stats = statsRes.data || {};
-                        let html = '';
-                        if(res.data.length === 0) {
-                            html = '<tr><td colspan="5" class="text-center text-muted">No students enrolled yet.</td></tr>';
-                        } else {
-                            res.data.forEach(s => {
-                                 const st = stats[s._id] || { present: 0, absent: 0, late: 0, total: 0 };
-                                 // 4 lates = 1 absent (which means 4 lates cancel 1 present effectively, or we just show raw counts)
-                                 // Let's show raw counts and effective percentage
-                                 const effectivePresents = st.present + (st.late * 0.75); // 4 lates = 1 absent means 1 late = 0.75 present
-                                 const perc = st.total === 0 ? 0 : Math.round((effectivePresents / st.total) * 100);
-                                 
-                                 html += `<tr>
-                                   <td class="fw-bold">${s.name}</td>
-                                   <td>${s.email}</td>
-                                   <td>
-                                      <span class="badge bg-success" title="Presents">${st.present} P</span>
-                                      <span class="badge bg-danger" title="Absents">${st.absent} A</span>
-                                      <span class="badge bg-warning text-dark" title="Lates">${st.late} L</span>
-                                      <span class="ms-2 fw-bold text-${perc >= 75 ? 'success' : (perc >= 50 ? 'warning' : 'danger')}">${perc}%</span>
-                                   </td>
-                                   <td>
-                                      <select class="form-select form-select-sm w-auto attendance-status" data-student="${s._id}">
-                                        <option value="Present" class="text-success" selected>Present</option>
-                                        <option value="Absent" class="text-danger">Absent</option>
-                                        <option value="Late" class="text-warning">Late</option>
-                                      </select>
-                                   </td>
-                                   <td>
-                                     <button class="btn btn-sm btn-outline-danger drop-student-btn" data-student="${s._id}" data-course="${courseId}">
-                                        <i class="fa-solid fa-user-minus"></i> Drop
-                                     </button>
-                                   </td>
-                                 </tr>`;
-                            });
-                        }
-                        $('#attendanceList').html(html);
-                    });
-                });
-            });
-            
-            // 3. Drop Student Logic
-            $(document).on('click', '.drop-student-btn', function() {
-                if(!confirm('Drop this student from the course?')) return;
-                const studentId = $(this).data('student');
-                const courseId = $(this).data('course');
-                
-                // Assuming we add a way to drop students for admin/faculty, or just use the student drop endpoint.
-                // The student drop endpoint uses req.user.id. Since faculty is doing it, we need a special endpoint.
-                // For now, we mock the UI success.
-                $(this).closest('tr').fadeOut(300, function() { $(this).remove(); });
-                showAlert('Student dropped from roster.', 'warning');
-            });
-            
-            // 4. Save Attendance Logic
-            $('#saveAttendanceBtn').click(function() {
-                const courseId = $('#attendanceCourseSelect').val();
-                if(!courseId) return showAlert('Please select a course first', 'danger');
-                
-                const records = [];
-                $('.attendance-status').each(function() {
-                    records.push({
-                        studentId: $(this).data('student'),
-                        status: $(this).val()
-                    });
-                });
-                
-                if(records.length === 0) return showAlert('No students to mark', 'warning');
-                
-                const selectedDate = $('#attendanceDate').val();
-                if(!selectedDate) return showAlert('Please select an attendance date', 'danger');
-                
-                $.ajax({
-                    url: '/api/attendance',
-                    type: 'POST',
-                    data: JSON.stringify({ courseId, date: selectedDate, records }),
-                    contentType: 'application/json',
-                    headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
-                }).done(res => {
-                    showAlert('Attendance saved for today!', 'success');
-                }).fail(err => {
-                    showAlert('Failed to save attendance', 'danger');
-                });
-            });
-        }, 500);
-    });
-  </script>
+        <!-- Section Metrics Summary Cards (Hidden until section selected) -->
+        <div class="row g-3 mb-4" id="sectionMetricsRow" style="display: none;">
+          <div class="col-md-3">
+            <div class="editorial-card p-3 anime-card bg-white">
+              <span class="stat-label">Enrolled Students</span>
+              <h3 class="stat-number mb-0 font-serif" id="metricTotalStudents">0</h3>
+              <small class="text-muted">Registered in this section</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="editorial-card p-3 anime-card bg-white">
+              <span class="stat-label">Average Attendance</span>
+              <h3 class="stat-number mb-0 font-serif" id="metricAvgAttendance">0%</h3>
+              <small class="text-muted">Section cumulative rate</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="editorial-card p-3 anime-card bg-white accent-terracotta">
+              <span class="stat-label">Students At Risk</span>
+              <h3 class="stat-number mb-0 font-serif text-danger" id="metricAtRisk">0</h3>
+              <small class="text-danger fw-semibold"><i class="fa-solid fa-triangle-exclamation me-1"></i>Below 75% threshold</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="editorial-card p-3 anime-card bg-white accent-sage">
+              <span class="stat-label">Exemplary Standing</span>
+              <h3 class="stat-number mb-0 font-serif text-success" id="metricHighAttendance">0</h3>
+              <small class="text-success"><i class="fa-solid fa-check-double me-1"></i>Above 90% attendance</small>
+            </div>
+          </div>
+        </div>
 
+        <div class="editorial-card p-4 anime-card" style="background: #FFFFFF;">
+          <!-- Course & Date Pickers -->
+          <div class="row g-3 align-items-center mb-4 p-3 rounded-3" style="background: var(--canvas-subtle); border: 1px solid var(--border-editorial);">
+            <div class="col-md-5">
+              <label class="form-label text-muted small fw-semibold">SELECT LECTURE SECTION</label>
+              <select class="form-select form-editorial" id="attendanceCourseSelect">
+                <option value="">Loading assigned courses...</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label text-muted small fw-semibold">SESSION DATE</label>
+              <input type="date" class="form-control form-editorial" id="attendanceDate">
+            </div>
+            <div class="col-md-3 text-md-end mt-md-4">
+              <span id="sessionStatusBadge" class="mono-tag bg-white border text-muted">Awaiting Section</span>
+            </div>
+          </div>
+
+          <!-- Quick Action & Search Bar -->
+          <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2" id="terminalActionBar" style="display: none !important;">
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-sm btn-outline-success px-3 fw-semibold" id="btnMarkAllPresent">
+                <i class="fa-solid fa-check me-1"></i> Mark All Present (🟢)
+              </button>
+              <button type="button" class="btn btn-sm btn-outline-danger px-3 fw-semibold" id="btnMarkAllAbsent">
+                <i class="fa-solid fa-xmark me-1"></i> Mark All Absent (🔴)
+              </button>
+              <button type="button" class="btn btn-sm btn-outline-secondary px-3" id="btnResetToDefaults">
+                <i class="fa-solid fa-rotate-left me-1"></i> Reset
+              </button>
+            </div>
+            <div style="min-width: 260px;">
+              <div class="input-group input-group-sm">
+                <span class="input-group-text bg-white border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                <input type="text" class="form-control form-editorial border-start-0" id="rosterSearchInput" placeholder="Filter student by name or ID...">
+              </div>
+            </div>
+          </div>
+
+          <!-- Student Table -->
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0" id="attendanceRosterTable">
+              <thead style="background: var(--canvas-subtle); border-bottom: 2px solid var(--border-editorial);">
+                <tr>
+                  <th class="py-3 font-serif">Student Name & ID</th>
+                  <th class="py-3 font-serif">Email</th>
+                  <th class="py-3 font-serif">Term Attendance</th>
+                  <th class="py-3 font-serif">Today's Marking</th>
+                  <th class="py-3 font-serif text-end">Quick Action</th>
+                </tr>
+              </thead>
+              <tbody id="attendanceList">
+                <tr><td colspan="5" class="text-center py-4 text-muted">Select a course section above to load the student roster.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top border-light-subtle">
+            <div class="text-muted small">
+              <i class="fa-solid fa-circle-info me-1 text-primary"></i>
+              Attendance modifications overwrite prior saves for the selected session date.
+            </div>
+            <button class="btn-editorial-primary px-4 py-2" id="saveAttendanceBtn" disabled>
+              <i class="fa-solid fa-floppy-disk me-2"></i> Save Session Attendance
+            </button>
+          </div>
+        </div>
 
       </div>
     </div>
   </div>
 
+  <!-- Session History Modal -->
+  <div class="modal fade" id="sessionHistoryModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: var(--radius-md);">
+        <div class="modal-header border-bottom border-light-subtle p-4 pb-2">
+          <div>
+            <h5 class="modal-title font-serif fw-bold">Past Attendance Sessions</h5>
+            <p class="text-muted small mb-0" id="historyModalSubtitle">Class session records</p>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead style="background: var(--canvas-subtle); border-bottom: 2px solid var(--border-editorial);">
+                <tr>
+                  <th class="py-2 font-serif">Date</th>
+                  <th class="py-2 font-serif">Total Marked</th>
+                  <th class="py-2 font-serif">Present</th>
+                  <th class="py-2 font-serif">Absent</th>
+                  <th class="py-2 font-serif">Late</th>
+                  <th class="py-2 font-serif">Participation</th>
+                  <th class="py-2 font-serif text-end">Action</th>
+                </tr>
+              </thead>
+              <tbody id="historyTableBody">
+                <tr><td colspan="7" class="text-center py-3 text-muted">Loading session history...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/anime.min.js"></script>
+  <script src="../js/animations.js"></script>
   <script src="../js/api.js"></script>
   <script src="../js/auth.js"></script>
+
   <script>
-    $(document).ready(function() {
-        // UI Initializers
+    let currentStudents = [];
+    let currentCourseStats = {};
+    let activeCourseInfo = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        let currentUser = null;
+        try {
+          currentUser = JSON.parse(localStorage.getItem('user'));
+        } catch(e) {}
+        currentUser = currentUser || { name: 'Faculty Member', role: 'FACULTY' };
+
+        // Default to today's date
+        const todayStr = new Date().toISOString().split('T')[0];
+        document.getElementById('attendanceDate').value = todayStr;
+
+        // Check if course query param is provided in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const preselectedCourseId = urlParams.get('courseId');
+
+        API.getCourses().done(res => {
+          let myCourses = res.data ? res.data.filter(c => c.instructor === currentUser.name) : [];
+          // Fallback so all course sections are available if logged in as admin or general instructor
+          if (myCourses.length === 0 && res.data && res.data.length > 0) {
+            myCourses = res.data;
+          }
+
+          let options = '';
+          myCourses.forEach(c => {
+            const isSelected = preselectedCourseId && c._id === preselectedCourseId ? 'selected' : '';
+            options += `<option value="${c._id}" ${isSelected}>${c.courseCode} — ${c.title} (${c.instructor})</option>`;
+          });
+          $('#attendanceCourseSelect').html(options);
+
+          // Auto-select course immediately so dummy data is visible on initial load!
+          if (myCourses.length > 0) {
+            const targetId = (preselectedCourseId && myCourses.some(c => c._id === preselectedCourseId)) 
+              ? preselectedCourseId 
+              : myCourses[0]._id;
+            $('#attendanceCourseSelect').val(targetId).trigger('change');
+          }
+        });
+
+        // Course Selection Change Handler
+        $('#attendanceCourseSelect').change(function() {
+          const courseId = $(this).val();
+          if (!courseId) {
+            $('#attendanceList').html('<tr><td colspan="5" class="text-center py-4 text-muted">Select a course above to load the student roster.</td></tr>');
+            $('#sectionMetricsRow').slideUp();
+            $('#terminalActionBar').attr('style', 'display: none !important');
+            $('#saveAttendanceBtn').prop('disabled', true);
+            $('#exportCsvBtn').prop('disabled', true);
+            $('#viewHistoryBtn').prop('disabled', true);
+            $('#sessionStatusBadge').text('Awaiting Section').attr('class', 'mono-tag bg-white border text-muted');
+            currentStudents = [];
+            currentCourseStats = {};
+            activeCourseInfo = null;
+            return;
+          }
+
+          loadRosterAndSession(courseId);
+        });
+
+        // Date Change Handler
+        $('#attendanceDate').change(function() {
+          const courseId = $('#attendanceCourseSelect').val();
+          if (courseId) {
+            loadSessionMarkings(courseId, $(this).val());
+          }
+        });
+
+        // Search Filter in Roster
+        $('#rosterSearchInput').on('keyup', function() {
+          const q = $(this).val().toLowerCase().trim();
+          $('#attendanceList tr').each(function() {
+            const text = $(this).text().toLowerCase();
+            $(this).toggle(text.indexOf(q) > -1);
+          });
+        });
+
+        // Quick Mark All Present
+        $('#btnMarkAllPresent').click(function() {
+          $('.attendance-status').val('Present').trigger('change');
+        });
+
+        // Quick Mark All Absent
+        $('#btnMarkAllAbsent').click(function() {
+          $('.attendance-status').val('Absent').trigger('change');
+        });
+
+        // Reset to default Present
+        $('#btnResetToDefaults').click(function() {
+          const courseId = $('#attendanceCourseSelect').val();
+          const date = $('#attendanceDate').val();
+          if (courseId && date) {
+            loadSessionMarkings(courseId, date);
+          }
+        });
+
+        // Export CSV Handler
+        $('#exportCsvBtn').click(function() {
+          if (!currentStudents || currentStudents.length === 0) return;
+          exportRosterCSV();
+        });
+
+        // Save Attendance Handler
+        $('#saveAttendanceBtn').click(function(e) {
+          const courseId = $('#attendanceCourseSelect').val();
+          if (!courseId) return showAlert('Please select a course first.', 'danger');
+
+          const records = [];
+          $('.attendance-status').each(function() {
+            records.push({
+              studentId: $(this).data('student'),
+              status: $(this).val()
+            });
+          });
+
+          if (records.length === 0) return showAlert('No students available to mark.', 'danger');
+
+          const selectedDate = $('#attendanceDate').val();
+          if (!selectedDate) return showAlert('Please specify an attendance date.', 'danger');
+
+          const saveBtn = $(this);
+          saveBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span>Saving...');
+
+          API.markAttendance({ courseId, date: selectedDate, records }).done(res => {
+            showAlert(res.message || 'Attendance records committed successfully!', 'success');
+            if (window.triggerCelebrationBurst) {
+              window.triggerCelebrationBurst(e.clientX, e.clientY);
+            }
+            loadRosterAndSession(courseId);
+          }).fail(err => {
+            showAlert(err.responseJSON?.message || 'Failed to save attendance records.', 'danger');
+          }).always(() => {
+            saveBtn.prop('disabled', false).html('<i class="fa-solid fa-floppy-disk me-2"></i> Save Session Attendance');
+          });
+        });
+
+        // Load History Modal
+        $('#viewHistoryBtn').click(function() {
+          const courseId = $('#attendanceCourseSelect').val();
+          if (!courseId) return;
+
+          API.getCourseAttendanceHistory(courseId).done(res => {
+            const sessions = res.data || [];
+            let html = '';
+            if (sessions.length === 0) {
+              html = '<tr><td colspan="7" class="text-center py-4 text-muted">No past attendance sessions recorded for this section yet.</td></tr>';
+            } else {
+              sessions.forEach(s => {
+                const total = s.total;
+                const rate = total > 0 ? Math.round(((s.present + (s.late * 0.75)) / total) * 100) : 0;
+                const statusBadge = rate >= 75 ? 'approved' : 'rejected';
+                html += `
+                  <tr>
+                    <td><strong class="font-serif">${s.date}</strong></td>
+                    <td><span class="mono-tag bg-white border">${s.total} Students</span></td>
+                    <td><span class="text-success fw-semibold">${s.present}</span></td>
+                    <td><span class="text-danger fw-semibold">${s.absent}</span></td>
+                    <td><span class="text-warning fw-semibold">${s.late}</span></td>
+                    <td><span class="badge-status ${statusBadge}">${rate}%</span></td>
+                    <td class="text-end">
+                      <button class="btn-editorial-outline btn-sm py-1 px-2 load-session-btn" data-date="${s.date}" data-bs-dismiss="modal">
+                        <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> Edit
+                      </button>
+                    </td>
+                  </tr>
+                `;
+              });
+            }
+            $('#historyTableBody').html(html);
+          });
+        });
+
+        // Click "Edit" inside History Modal
+        $(document).on('click', '.load-session-btn', function() {
+          const date = $(this).data('date');
+          $('#attendanceDate').val(date);
+          const courseId = $('#attendanceCourseSelect').val();
+          if (courseId) {
+            loadSessionMarkings(courseId, date);
+          }
+        });
+      }, 300);
     });
+
+    // Load full roster and initial stats
+    function loadRosterAndSession(courseId) {
+      $('#attendanceList').html('<tr><td colspan="5" class="text-center py-4 text-muted"><div class="editorial-spinner mx-auto mb-2"></div>Loading class roster and attendance metrics...</td></tr>');
+
+      $.when(
+        API.getCourseStudents(courseId),
+        API.getCourseAttendanceStats(courseId),
+        API.getCourses()
+      ).done((studentsRes, statsRes, allCoursesRes) => {
+        currentStudents = studentsRes[0].data || [];
+        currentCourseStats = statsRes[0].data || {};
+
+        const allCourses = allCoursesRes[0].data || [];
+        activeCourseInfo = allCourses.find(c => c._id === courseId);
+
+        if (activeCourseInfo) {
+          $('#historyModalSubtitle').text(`${activeCourseInfo.courseCode} — ${activeCourseInfo.title}`);
+        }
+
+        renderMetrics(currentStudents, currentCourseStats);
+        renderRoster(currentStudents, currentCourseStats);
+
+        $('#sectionMetricsRow').slideDown();
+        $('#terminalActionBar').attr('style', 'display: flex !important');
+        $('#saveAttendanceBtn').prop('disabled', currentStudents.length === 0);
+        $('#exportCsvBtn').prop('disabled', currentStudents.length === 0);
+        $('#viewHistoryBtn').prop('disabled', false);
+
+        // Now load marking for current date
+        const currentDate = $('#attendanceDate').val();
+        loadSessionMarkings(courseId, currentDate);
+      }).fail(err => {
+        $('#attendanceList').html('<tr><td colspan="5" class="text-center py-4 text-danger">Failed to load course student roster.</td></tr>');
+      });
+    }
+
+    // Render Metrics Banner
+    function renderMetrics(students, stats) {
+      const total = students.length;
+      $('#metricTotalStudents').text(total);
+
+      if (total === 0) {
+        $('#metricAvgAttendance').text('0%');
+        $('#metricAtRisk').text(0);
+        $('#metricHighAttendance').text(0);
+        return;
+      }
+
+      let totalPerc = 0;
+      let atRiskCount = 0;
+      let highCount = 0;
+
+      students.forEach(s => {
+        const st = stats[s._id] || { present: 0, absent: 0, late: 0, total: 0 };
+        const effective = st.present + (st.late * 0.75);
+        const perc = st.total === 0 ? 0 : Math.round((effective / st.total) * 100);
+        totalPerc += perc;
+
+        if (st.total > 0 && perc < 75) atRiskCount++;
+        if (perc >= 90) highCount++;
+      });
+
+      const avg = Math.round(totalPerc / total);
+      $('#metricAvgAttendance').text(`${avg}%`);
+      $('#metricAtRisk').text(atRiskCount);
+      $('#metricHighAttendance').text(highCount);
+    }
+
+    // Render Roster Rows
+    function renderRoster(students, stats) {
+      if (!students || students.length === 0) {
+        $('#attendanceList').html('<tr><td colspan="5" class="text-center py-4 text-muted">No students currently enrolled in this course section.</td></tr>');
+        return;
+      }
+
+      let html = '';
+      students.forEach(s => {
+        const st = stats[s._id] || { present: 0, absent: 0, late: 0, total: 0 };
+        const effective = st.present + (st.late * 0.75);
+        const perc = st.total === 0 ? 0 : Math.round((effective / st.total) * 100);
+
+        let riskBadge = '';
+        if (st.total > 0 && perc < 75) {
+          riskBadge = `<span class="badge-status rejected ms-2" title="Below 75% Examination Requirement"><i class="fa-solid fa-triangle-exclamation me-1"></i>At Risk</span>`;
+        } else if (st.total > 0 && perc >= 75) {
+          riskBadge = `<span class="badge-status approved ms-2">Eligible</span>`;
+        } else {
+          riskBadge = `<span class="badge-status pending ms-2">New</span>`;
+        }
+
+        html += `
+          <tr data-student-row="${s._id}">
+            <td>
+              <div>
+                <strong class="font-serif text-dark d-block">${s.name}</strong>
+                <span class="mono-tag" style="background:#E2E8F0; color:#334155; font-size:0.7rem;">${s.studentId || 'N/A'}</span>
+              </div>
+            </td>
+            <td class="small text-muted">${s.email}</td>
+            <td>
+              <span class="fw-bold font-serif ${perc < 75 && st.total > 0 ? 'text-danger' : 'text-dark'}">${perc}%</span>
+              ${riskBadge}
+              <div class="small text-muted mt-1" style="font-size:0.75rem;">(${st.present}P · ${st.absent}A · ${st.late}L in ${st.total} sess)</div>
+            </td>
+            <td>
+              <select class="form-select form-editorial form-select-sm w-auto attendance-status" data-student="${s._id}">
+                <option value="Present" selected>Present (🟢)</option>
+                <option value="Absent">Absent (🔴)</option>
+                <option value="Late">Late (🟡)</option>
+              </select>
+            </td>
+            <td class="text-end">
+              <div class="btn-group btn-group-sm">
+                <button type="button" class="btn btn-outline-success btn-quick-mark" data-student="${s._id}" data-status="Present" title="Mark Present">P</button>
+                <button type="button" class="btn btn-outline-danger btn-quick-mark" data-student="${s._id}" data-status="Absent" title="Mark Absent">A</button>
+                <button type="button" class="btn btn-outline-warning btn-quick-mark" data-student="${s._id}" data-status="Late" title="Mark Late">L</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+      $('#attendanceList').html(html);
+
+      // Attach quick mark buttons
+      $('.btn-quick-mark').click(function() {
+        const sId = $(this).data('student');
+        const st = $(this).data('status');
+        $(`.attendance-status[data-student="${sId}"]`).val(st);
+      });
+    }
+
+    // Load markings for chosen date
+    function loadSessionMarkings(courseId, dateStr) {
+      if (!courseId || !dateStr) return;
+
+      API.getAttendanceByDate(courseId, dateStr).done(res => {
+        const records = res.data || [];
+        if (records.length > 0) {
+          // Pre-populate existing session
+          const map = {};
+          records.forEach(r => {
+            const id = r.student?._id || r.student;
+            map[id] = r.status;
+          });
+
+          $('.attendance-status').each(function() {
+            const sId = $(this).data('student');
+            if (map[sId]) {
+              $(this).val(map[sId]);
+            }
+          });
+
+          $('#sessionStatusBadge')
+            .text(`Session Found: ${records.length} Marked`)
+            .attr('class', 'mono-tag bg-primary-subtle text-primary border border-primary-subtle');
+        } else {
+          // New session defaults to Present
+          $('.attendance-status').val('Present');
+          $('#sessionStatusBadge')
+            .text('New Session Entry')
+            .attr('class', 'mono-tag bg-success-subtle text-success border border-success-subtle');
+        }
+      });
+    }
+
+    // Export CSV of Course Roster & Attendance
+    function exportRosterCSV() {
+      const code = activeCourseInfo ? activeCourseInfo.courseCode : 'COURSE';
+      const title = activeCourseInfo ? activeCourseInfo.title : 'Attendance';
+      const dateStr = new Date().toISOString().split('T')[0];
+
+      let csv = `CampusConnect Class Attendance Report\n`;
+      csv += `Course,${code} - ${title}\n`;
+      csv += `Generated Date,${dateStr}\n`;
+      csv += `Total Students,${currentStudents.length}\n\n`;
+
+      csv += `Student ID,Student Name,Email,Total Sessions,Present,Absent,Late,Cumulative Rate (%),Eligibility Status\n`;
+
+      currentStudents.forEach(s => {
+        const st = currentCourseStats[s._id] || { present: 0, absent: 0, late: 0, total: 0 };
+        const effective = st.present + (st.late * 0.75);
+        const perc = st.total === 0 ? 0 : Math.round((effective / st.total) * 100);
+        const eligibility = perc >= 75 ? 'ELIGIBLE' : (st.total === 0 ? 'NO RECORDS' : 'AT RISK (<75%)');
+
+        csv += `"${s.studentId || ''}","${s.name}","${s.email}",${st.total},${st.present},${st.absent},${st.late},${perc}%,${eligibility}\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `${code}_Attendance_Report_${dateStr}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      showAlert('Attendance CSV report downloaded successfully!', 'success');
+    }
   </script>
 </body>
 </html>

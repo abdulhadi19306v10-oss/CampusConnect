@@ -2,101 +2,129 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Complaints - CampusConnect</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support & Complaints — CampusConnect</title>
+  
+  <!-- Bootstrap 5 & FontAwesome -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Editorial Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Design System CSS -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container-fluid px-4">
-      <a class="navbar-brand" href="dashboard.html"><i class="fa-solid fa-graduation-cap me-2"></i>CampusConnect</a>
-      <div class="d-flex align-items-center">
-        <a href="index.html" class="btn btn-sm btn-outline-secondary me-3"><i class="fa-solid fa-house"></i> Home</a>
-        <span class="me-3 fw-medium text-secondary user-name">Student</span>
-        <button id="logoutBtn" class="btn btn-outline-danger btn-sm">Logout</button>
+      <a class="navbar-brand" href="dashboard.html">
+        <div class="brand-icon-editorial">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        CampusConnect
+      </a>
+      
+      <div class="d-flex align-items-center gap-3">
+        <span class="mono-tag bg-white text-muted border d-none d-sm-inline-block">Student Services</span>
+        <span class="fw-semibold text-dark user-name small d-none d-md-inline">Student</span>
+        <button id="logoutBtn" class="btn-editorial-outline btn-sm py-1 px-3" style="font-size: 0.82rem;">Logout</button>
       </div>
     </div>
   </nav>
 
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-2 d-none d-md-block sidebar px-0">
+      <!-- Sidebar -->
+      <div class="col-md-2 d-none d-md-block sidebar-editorial">
         <div class="nav flex-column">
-          <a class="nav-link" href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
-          <a class="nav-link" href="courses.html"><i class="fa-solid fa-book"></i> Courses</a>
+          <a class="nav-link" href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Overview</a>
+          <a class="nav-link" href="courses.html"><i class="fa-solid fa-book-bookmark"></i> Courses</a>
           <a class="nav-link" href="timetable.html"><i class="fa-solid fa-calendar-days"></i> Timetable</a>
-          <a class="nav-link" href="bookings.html"><i class="fa-solid fa-building"></i> Facilities</a>
-          <a class="nav-link active" href="complaints.html"><i class="fa-solid fa-comment-dots"></i> Complaints</a>
-          <a class="nav-link" href="announcements.html"><i class="fa-solid fa-bullhorn"></i> Announcements</a>
+          <a class="nav-link" href="bookings.html"><i class="fa-solid fa-building-columns"></i> Facilities</a>
+          <a class="nav-link active" href="complaints.html"><i class="fa-solid fa-comment-dots"></i> Support Desk</a>
+          <a class="nav-link" href="announcements.html"><i class="fa-solid fa-bullhorn"></i> Noticeboard</a>
         </div>
       </div>
 
-      <div class="col-md-10 dashboard-content bg-light">
+      <!-- Main Content -->
+      <div class="col-md-10 p-4 p-md-5">
         <div id="alertContainer"></div>
 
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-2 border-bottom border-light-subtle gap-3">
+          <div>
+            <span class="mono-tag" style="background: var(--brand-terracotta-light); color: var(--brand-terracotta);">Grievance Resolution</span>
+            <h1 class="font-serif display-6 mb-1 fw-bold mt-1">Student Support & Complaints Desk</h1>
+            <p class="text-muted small mb-0">Submit academic queries, equipment malfunctions, or general campus grievances.</p>
+          </div>
+        </div>
+
         <div class="row g-4">
-          <div class="col-md-4">
-            <div class="card h-100">
-              <div class="card-header bg-white pt-4 pb-0 border-bottom-0">
-                <h5 class="fw-bold">Submit a Complaint</h5>
-              </div>
-              <div class="card-body">
-                <form id="complaintForm">
-                  <div class="mb-3">
-                    <label class="form-label text-muted fw-semibold">Category</label>
-                    <select class="form-select bg-light" id="category" required>
-                      <option value="">Select Category</option>
-                      <option value="Academic">Academic</option>
-                      <option value="Facility">Facility</option>
-                      <option value="Technical">Technical</option>
-                      <option value="Administration">Administration</option>
-                      <option value="Other">Other</option>
-                    </select>
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label text-muted fw-semibold">Subject</label>
-                    <input type="text" class="form-control bg-light" id="subject" required>
-                  </div>
-                  <div class="mb-4">
-                    <label class="form-label text-muted fw-semibold">Description</label>
-                    <textarea class="form-control bg-light" id="description" rows="4" required></textarea>
-                  </div>
-                  <button type="submit" class="btn btn-primary w-100 fw-bold">Submit</button>
-                </form>
-              </div>
+          <!-- Lodge Ticket Form -->
+          <div class="col-lg-5">
+            <div class="editorial-card p-4 anime-card h-100">
+              <h4 class="font-serif fw-bold mb-1">Submit Grievance Ticket</h4>
+              <p class="text-muted small mb-4">Tickets are assigned directly to the responsible campus department.</p>
+
+              <form id="complaintForm">
+                <div class="mb-3">
+                  <label class="form-label text-muted small fw-semibold">GRIEVANCE CATEGORY</label>
+                  <select class="form-select form-editorial" id="category" required>
+                    <option value="">Select category...</option>
+                    <option value="Academic">Academic / Curriculum</option>
+                    <option value="Facility">Campus Facility & Rooms</option>
+                    <option value="Technical">Technical & Lab Equipment</option>
+                    <option value="Administration">Administration & Fees</option>
+                    <option value="Other">Other Issues</option>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label text-muted small fw-semibold">TICKET SUBJECT</label>
+                  <input type="text" class="form-control form-editorial" id="subject" required placeholder="e.g. Broken monitor in Computer Lab A">
+                </div>
+
+                <div class="mb-4">
+                  <label class="form-label text-muted small fw-semibold">DETAILED DESCRIPTION</label>
+                  <textarea class="form-control form-editorial" id="description" rows="4" required placeholder="Please provide specific context, location, and details..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-editorial-primary w-100 py-3 fw-bold">
+                  Submit Support Ticket <i class="fa-solid fa-arrow-right ms-2"></i>
+                </button>
+              </form>
             </div>
           </div>
-          
-          <div class="col-md-8">
-            <div class="card h-100">
-              <div class="card-header bg-white pt-4 pb-0 border-bottom-0">
-                <h5 class="fw-bold">My Complaints</h5>
-              </div>
-              <div class="card-body">
-                
-            <div class="mb-3 d-flex justify-content-end table-search-container">
-              <div class="input-group" style="width: 250px;">
-                <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-search text-muted"></i></span>
-                <input type="text" class="form-control border-start-0 bg-light page-search" placeholder="Search...">
-              </div>
-            </div>
-            <div class="table-responsive">
-                  <table class="table table-hover align-middle">
-                    <thead class="table-light">
-                      <tr>
-                        <th>Subject</th>
-                        <th>Category</th>
-                        <th>Status</th>
-                        <th>Admin Response</th>
-                      </tr>
-                    </thead>
-                    <tbody id="myComplaintsTable">
-                      <tr><td colspan="4" class="text-center">Loading...</td></tr>
-                    </tbody>
-                  </table>
+
+          <!-- My Tickets Table -->
+          <div class="col-lg-7">
+            <div class="editorial-card p-4 anime-card h-100">
+              <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-light-subtle">
+                <h4 class="font-serif fw-bold mb-0">My Submitted Tickets</h4>
+                <div class="input-group" style="max-width: 220px;">
+                  <span class="input-group-text bg-white border-end-0" style="border-color: var(--border-editorial);"><i class="fa-solid fa-search text-muted small"></i></span>
+                  <input type="text" class="form-control form-editorial border-start-0 py-1" id="complaintSearch" placeholder="Filter...">
                 </div>
+              </div>
+
+              <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                  <thead style="background: var(--canvas-subtle); border-bottom: 2px solid var(--border-editorial);">
+                    <tr>
+                      <th class="py-3 font-serif">Subject & Details</th>
+                      <th class="py-3 font-serif">Category</th>
+                      <th class="py-3 font-serif">Status</th>
+                      <th class="py-3 font-serif">Resolution Note</th>
+                    </tr>
+                  </thead>
+                  <tbody id="myComplaintsTable">
+                    <tr><td colspan="4" class="text-center py-4 text-muted">Loading your tickets...</td></tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -106,11 +134,14 @@
     </div>
   </div>
 
+  <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  
+  <script src="js/anime.min.js"></script>
+  <script src="js/animations.js"></script>
   <script src="js/api.js"></script>
   <script src="js/auth.js"></script>
+
   <script>
     $(document).ready(function() {
       loadComplaints();
@@ -118,20 +149,37 @@
       function loadComplaints() {
         API.getMyComplaints().done(res => {
           let html = '';
-          if(res.data.length === 0) html = '<tr><td colspan="4" class="text-center">No complaints submitted.</td></tr>';
-          res.data.forEach(c => {
-            let badge = 'secondary';
-            if(c.status === 'OPEN') badge = 'danger';
-            if(c.status === 'IN_PROGRESS') badge = 'warning';
-            if(c.status === 'RESOLVED' || c.status === 'CLOSED') badge = 'success';
+          if (!res.data || res.data.length === 0) {
+            html = '<tr><td colspan="4" class="text-center py-4 text-muted">You have no active support tickets.</td></tr>';
+          } else {
+            res.data.forEach(c => {
+              let badgeClass = 'pending';
+              if (c.status === 'RESOLVED' || c.status === 'CLOSED') badgeClass = 'approved';
+              if (c.status === 'OPEN') badgeClass = 'rejected';
 
-            html += `<tr>
-              <td class="fw-bold">${c.subject}<br><small class="text-muted text-truncate d-inline-block" style="max-width:200px;">${c.description}</small></td>
-              <td>${c.category}</td>
-              <td><span class="badge bg-${badge}">${c.status}</span></td>
-              <td>${c.adminResponse || '<i class="text-muted">No response yet</i>'}</td>
-            </tr>`;
-          });
+              html += `
+                <tr class="complaint-row">
+                  <td>
+                    <strong class="font-serif d-block text-dark">${c.title || c.subject || 'Ticket'}</strong>
+                    <small class="text-muted d-inline-block text-truncate" style="max-width: 220px;">${c.description}</small>
+                  </td>
+                  <td>
+                    <span class="mono-tag bg-white border text-dark">${c.category}</span>
+                  </td>
+                  <td>
+                    <span class="badge-status ${badgeClass}">${c.status}</span>
+                  </td>
+                  <td>
+                    ${c.adminComment ? `
+                      <div class="p-2 rounded bg-light border small text-dark" style="font-size: 0.76rem;">
+                        <i class="fa-solid fa-comment-dots text-primary me-1"></i> ${c.adminComment}
+                      </div>
+                    ` : '<span class="text-muted small">Awaiting review</span>'}
+                  </td>
+                </tr>
+              `;
+            });
+          }
           $('#myComplaintsTable').html(html);
         });
       }
@@ -140,29 +188,28 @@
         e.preventDefault();
         const data = {
           category: $('#category').val(),
+          title: $('#subject').val(),
           subject: $('#subject').val(),
           description: $('#description').val()
         };
-        
+
         API.submitComplaint(data).done(res => {
-          showAlert(res.message, 'success');
+          showAlert(res.message || 'Support ticket logged successfully!', 'success');
+          if (window.triggerCelebrationBurst) {
+            window.triggerCelebrationBurst(e.clientX, e.clientY);
+          }
           $('#complaintForm')[0].reset();
           loadComplaints();
         }).fail(err => {
-          showAlert(err.responseJSON?.message || 'Error submitting', 'danger');
+          showAlert(err.responseJSON?.message || 'Error submitting ticket', 'danger');
         });
       });
-    });
-  </script>
 
-  <script>
-    $(document).ready(function() {
-      // Global Table Live Search
-      $('.page-search').on('keyup', function() {
-        const value = $(this).val().toLowerCase();
-        // find the closest table-responsive container which is a sibling of the search container
-        $(this).closest('.table-search-container').next('.table-responsive').find('tbody tr').filter(function() {
-          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      // Filter Search
+      $('#complaintSearch').on('keyup', function() {
+        const val = $(this).val().toLowerCase();
+        $('.complaint-row').filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(val) > -1);
         });
       });
     });

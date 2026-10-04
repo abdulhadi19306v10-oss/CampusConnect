@@ -2,149 +2,421 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Course Manager - CampusConnect Faculty</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Manager — CampusConnect Faculty</title>
+  
+  <!-- Bootstrap 5 & FontAwesome -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Editorial Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Design System CSS -->
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container-fluid px-4">
-      <a class="navbar-brand" href="dashboard.html"><i class="fa-solid fa-graduation-cap me-2"></i>CampusConnect Faculty</a>
-      <div class="d-flex align-items-center">
-        <a href="../index.html" class="btn btn-sm btn-outline-secondary me-3"><i class="fa-solid fa-house"></i> Home</a>
-        <span class="me-3 fw-medium text-secondary user-name">Professor</span>
-        <button id="logoutBtn" class="btn btn-outline-danger btn-sm">Logout</button>
+      <a class="navbar-brand" href="dashboard.html">
+        <div class="brand-icon-editorial" style="background-color: var(--brand-terracotta);">
+          <i class="fa-solid fa-chalkboard-user"></i>
+        </div>
+        CampusConnect <span class="font-sans fw-normal text-muted ms-2" style="font-size: 1rem;">Faculty Portal</span>
+      </a>
+      
+      <div class="d-flex align-items-center gap-3">
+        <span class="mono-tag bg-white text-muted border d-none d-sm-inline-block">Course Sections</span>
+        <span class="fw-semibold text-dark user-name small d-none d-md-inline">Professor</span>
+        <button id="logoutBtn" class="btn-editorial-outline btn-sm py-1 px-3" style="font-size: 0.82rem;">Logout</button>
       </div>
     </div>
   </nav>
 
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-2 d-none d-md-block sidebar px-0">
+      <!-- Sidebar -->
+      <div class="col-md-2 d-none d-md-block sidebar-editorial">
         <div class="nav flex-column">
-          <a class="nav-link " href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
-          <a class="nav-link active" href="courses.html"><i class="fa-solid fa-book"></i> Course Manager</a>
-          <a class="nav-link " href="attendance.html"><i class="fa-solid fa-clipboard-user"></i> Attendance</a>
-          <a class="nav-link " href="announcements.html"><i class="fa-solid fa-bullhorn"></i> Announcements</a>
+          <a class="nav-link" href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Overview</a>
+          <a class="nav-link active" href="courses.html"><i class="fa-solid fa-book-bookmark"></i> Course Roster</a>
+          <a class="nav-link" href="attendance.html"><i class="fa-solid fa-clipboard-user"></i> Attendance Terminal</a>
+          <a class="nav-link" href="announcements.html"><i class="fa-solid fa-bullhorn"></i> Course Notices</a>
         </div>
       </div>
 
-      <div class="col-md-10 dashboard-content bg-light">
+      <!-- Main Content -->
+      <div class="col-md-10 p-4 p-md-5">
         <div id="alertContainer"></div>
-        
-        <h2 class="fw-bold mb-4">Course Manager</h2>
-        
-        <div class="row g-4 mb-4">
-            <div class="col-md-12">
-                <div class="card border-0 shadow-sm">
-                  <div class="card-header bg-white pt-4 pb-0 border-bottom-0 d-flex justify-content-between">
-                    <h5 class="fw-bold mb-0">My Teaching Assignments</h5>
-                    <button class="btn btn-primary-gradient rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#uploadContentModal">
-                      <i class="fa-solid fa-cloud-arrow-up me-2"></i>Upload Content
-                    </button>
-                  </div>
-                  <div class="card-body mt-3">
-                    <div class="table-responsive">
-                      <table class="table table-hover align-middle">
-                        <thead class="table-light">
-                          <tr>
-                            <th>Code</th>
-                            <th>Title</th>
-                            <th>Status</th>
-                            <th>Materials Uploaded</th>
-                            <th>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody id="facultyCoursesList">
-                          <tr><td colspan="5" class="text-center">Loading...</td></tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Upload Modal -->
-        <div class="modal fade" id="uploadContentModal" tabindex="-1">
-          <div class="modal-dialog">
-            <div class="modal-content border-0 shadow">
-              <div class="modal-header border-bottom-0">
-                <h5 class="modal-title fw-bold">Upload Course Content</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-              </div>
-              <div class="modal-body">
-                <form id="uploadForm">
-                  <div class="mb-3">
-                    <label class="form-label text-muted fw-semibold">Select Course</label>
-                    <select class="form-select" id="courseSelect" required>
-                        <option value="">-- Choose Assigned Course --</option>
-                    </select>
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label text-muted fw-semibold">Material Title</label>
-                    <input type="text" class="form-control" placeholder="e.g. Week 1 Lecture Slides" required>
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label text-muted fw-semibold">File Upload</label>
-                    <input type="file" class="form-control" required>
-                  </div>
-                  <button type="submit" class="btn btn-primary-gradient w-100 rounded-pill mt-3 py-2">Upload to LMS</button>
-                </form>
-              </div>
-            </div>
+
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-2 border-bottom border-light-subtle gap-3">
+          <div>
+            <span class="mono-tag" style="background: var(--brand-terracotta-light); color: var(--brand-terracotta);">Curriculum Distribution</span>
+            <h1 class="font-serif display-6 mb-1 fw-bold mt-1">Teaching Sections & Materials</h1>
+            <p class="text-muted small mb-0">Manage course syllabi, lecture slides, student roster compliance, and exam eligibility.</p>
+          </div>
+          <div>
+            <button class="btn-editorial-primary btn-sm px-4 py-2" data-bs-toggle="modal" data-bs-target="#uploadContentModal">
+              <i class="fa-solid fa-cloud-arrow-up me-2"></i> Upload Handout / Syllabus
+            </button>
           </div>
         </div>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                setTimeout(() => {
-                    const currentUser = JSON.parse(localStorage.getItem('user'));
-                    if(!currentUser) return;
-                    
-                    API.getCourses().done(res => {
-                        const myCourses = res.data.filter(c => c.instructor === currentUser.name);
-                        let html = '';
-                        let options = '<option value="">-- Choose Assigned Course --</option>';
-                        myCourses.forEach(c => {
-                             html += `<tr>
-                               <td class="fw-bold">${c.courseCode}</td>
-                               <td>${c.title}</td>
-                               <td><span class="badge bg-success">Active</span></td>
-                               <td>0 files</td>
-                               <td>
-                                 <a href="attendance.html" class="btn btn-sm btn-outline-primary me-1"><i class="fa-solid fa-folder-open"></i> Manage</a>
-                               </td>
-                             </tr>`;
-                             options += `<option value="${c._id}">${c.courseCode} - ${c.title}</option>`;
-                        });
-                        $('#facultyCoursesList').html(html || '<tr><td colspan="5" class="text-center text-muted">No courses assigned to you yet.</td></tr>');
-                        $('#courseSelect').html(options);
-                    });
-                    
-                    $('#uploadForm').submit(function(e) {
-                        e.preventDefault();
-                        $('#uploadContentModal').modal('hide');
-                        showAlert('Course material uploaded successfully and distributed to enrolled students!', 'success');
-                        this.reset();
-                    });
-                }, 500);
-            });
-        </script>
+        <!-- Course Sections Table -->
+        <div class="editorial-card p-4 anime-card mb-4" style="background: #FFFFFF;">
+          <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-light-subtle">
+            <div>
+              <h4 class="font-serif fw-bold mb-0">Assigned Lecture Sections</h4>
+              <p class="text-muted small mb-0">Roster sizes and exam attendance status.</p>
+            </div>
+            <span class="mono-tag bg-white border">Fall 2026</span>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead style="background: var(--canvas-subtle); border-bottom: 2px solid var(--border-editorial);">
+                <tr>
+                  <th class="py-3 font-serif">Code</th>
+                  <th class="py-3 font-serif">Course Title</th>
+                  <th class="py-3 font-serif">Credits</th>
+                  <th class="py-3 font-serif" style="min-width: 170px;">Enrollment Capacity</th>
+                  <th class="py-3 font-serif">Handouts</th>
+                  <th class="py-3 font-serif text-end">Action</th>
+                </tr>
+              </thead>
+              <tbody id="facultyCoursesList">
+                <tr><td colspan="6" class="text-center py-4 text-muted">Loading assigned sections...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Course Handouts & Resources Distribution -->
+        <div class="editorial-card p-4 anime-card" style="background: #FFFFFF;">
+          <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-light-subtle">
+            <div>
+              <h4 class="font-serif fw-bold mb-0">Course Handouts & Teaching Assets</h4>
+              <p class="text-muted small mb-0">Published lecture slides, problem sheets, and syllabus guides accessible to enrolled students.</p>
+            </div>
+            <span class="mono-tag bg-white border"><i class="fa-solid fa-file-pdf me-1 text-danger"></i>Digital Repository</span>
+          </div>
+
+          <div class="row g-3" id="courseMaterialsList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
 
       </div>
     </div>
   </div>
 
+  <!-- Student Roster & Compliance Modal -->
+  <div class="modal fade" id="rosterModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: var(--radius-md);">
+        <div class="modal-header border-bottom border-light-subtle p-4 pb-2">
+          <div>
+            <h5 class="modal-title font-serif fw-bold" id="rosterModalTitle">Class Student Roster</h5>
+            <p class="text-muted small mb-0" id="rosterModalSubtitle">Exam eligibility & attendance</p>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="small text-muted" id="rosterStudentCount">0 Students Enrolled</span>
+            <input type="text" class="form-control form-control-sm form-editorial w-50" id="rosterSearch" placeholder="Search student name or ID...">
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0" id="rosterModalTable">
+              <thead style="background: var(--canvas-subtle); border-bottom: 2px solid var(--border-editorial);">
+                <tr>
+                  <th class="py-2 font-serif">Student Name & ID</th>
+                  <th class="py-2 font-serif">Email</th>
+                  <th class="py-2 font-serif">Term Attendance</th>
+                  <th class="py-2 font-serif text-end">Exam Eligibility</th>
+                </tr>
+              </thead>
+              <tbody id="rosterModalBody">
+                <tr><td colspan="4" class="text-center py-4 text-muted">Loading students...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upload Material Modal -->
+  <div class="modal fade" id="uploadContentModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: var(--radius-md);">
+        <div class="modal-header border-bottom border-light-subtle p-4 pb-2">
+          <h5 class="modal-title font-serif fw-bold">Upload Course Handout</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4">
+          <form id="uploadForm">
+            <div class="mb-3">
+              <label class="form-label text-muted small fw-semibold">SELECT LECTURE SECTION</label>
+              <select class="form-select form-editorial" id="courseSelect" required>
+                <option value="">-- Choose Assigned Course --</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-muted small fw-semibold">DOCUMENT TITLE</label>
+              <input type="text" class="form-control form-editorial" id="materialTitle" placeholder="e.g. Week 4: Architectural Design Patterns" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-muted small fw-semibold">DOCUMENT TYPE</label>
+              <select class="form-select form-editorial" id="materialType">
+                <option value="Lecture Slides">Lecture Slides (PDF)</option>
+                <option value="Lab Manual">Lab Assignment Specification</option>
+                <option value="Syllabus">Course Outline & Grading Policy</option>
+                <option value="Reading Material">Supplementary Reading Material</option>
+              </select>
+            </div>
+            <div class="mb-4">
+              <label class="form-label text-muted small fw-semibold">ATTACHMENT (PDF / PPTX / ZIP)</label>
+              <input type="file" class="form-control form-editorial" id="materialFile" required>
+            </div>
+            <button type="submit" class="btn-editorial-primary w-100 py-3 fw-bold">
+              Distribute to Class Portal <i class="fa-solid fa-arrow-right ms-2"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/anime.min.js"></script>
+  <script src="../js/animations.js"></script>
   <script src="../js/api.js"></script>
   <script src="../js/auth.js"></script>
+
   <script>
-    $(document).ready(function() {
-        // UI Initializers
+    // Sample simulated materials store
+    let publishedMaterials = [
+      { id: 1, course: 'SE101', title: 'Week 1: Software Lifecycle & Agile Fundamentals', type: 'Lecture Slides', size: '2.4 MB', date: 'Sep 12, 2026' },
+      { id: 2, course: 'SE101', title: 'Lab 1: Git Feature Branching & CI Pipelines', type: 'Lab Manual', size: '1.1 MB', date: 'Sep 18, 2026' },
+      { id: 3, course: 'SE101', title: 'Project Milestone 1 Architecture Template', type: 'Reading Material', size: '840 KB', date: 'Sep 25, 2026' },
+      { id: 4, course: 'CS102', title: 'Trees, Heaps and Priority Queues Analysis', type: 'Lecture Slides', size: '3.1 MB', date: 'Sep 20, 2026' },
+      { id: 5, course: 'SE201', title: 'Clean Architecture & Dependency Inversion Patterns', type: 'Lecture Slides', size: '4.2 MB', date: 'Sep 22, 2026' }
+    ];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        let currentUser = null;
+        try {
+          currentUser = JSON.parse(localStorage.getItem('user'));
+        } catch(e) {}
+        currentUser = currentUser || { name: 'Faculty Member', role: 'FACULTY' };
+
+        function renderMaterials(courseCode) {
+          const list = courseCode 
+            ? publishedMaterials.filter(m => m.course === courseCode)
+            : publishedMaterials;
+
+          let html = '';
+          if (list.length === 0) {
+            html = '<div class="col-12 text-center text-muted py-4">No materials published yet. Click "Upload Handout" to add files.</div>';
+          } else {
+            list.forEach(m => {
+              let icon = 'fa-file-lines text-primary';
+              if (m.type === 'Lecture Slides') icon = 'fa-file-powerpoint text-danger';
+              if (m.type === 'Lab Manual') icon = 'fa-file-code text-success';
+              if (m.type === 'Syllabus') icon = 'fa-file-pdf text-warning';
+
+              html += `
+                <div class="col-md-6 col-lg-4 material-item" id="material-${m.id}">
+                  <div class="p-3 border rounded-3 bg-white h-100 d-flex flex-column justify-content-between">
+                    <div>
+                      <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="mono-tag" style="background:var(--canvas-subtle); color:var(--brand-navy); font-size:0.72rem;">${m.course}</span>
+                        <span class="mono-tag bg-white border text-muted" style="font-size:0.7rem;">${m.size}</span>
+                      </div>
+                      <div class="d-flex gap-2 align-items-start mt-2">
+                        <i class="fa-solid ${icon} fs-4 mt-1"></i>
+                        <div>
+                          <strong class="font-serif text-dark d-block small">${m.title}</strong>
+                          <span class="text-muted" style="font-size:0.75rem;">${m.type} · ${m.date}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-light-subtle">
+                      <a href="#" class="btn-editorial-outline btn-sm py-1 px-2" style="font-size:0.75rem;" onclick="showAlert('Simulating download of handout package...', 'info'); return false;">
+                        <i class="fa-solid fa-download me-1"></i> Download
+                      </a>
+                      <button class="btn btn-sm text-danger border-0 p-0" onclick="deleteMaterial(${m.id})">
+                        <i class="fa-regular fa-trash-can"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              `;
+            });
+          }
+          $('#courseMaterialsList').html(html);
+        }
+
+        API.getCourses().done(res => {
+          let myCourses = res.data ? res.data.filter(c => c.instructor === currentUser.name) : [];
+          if (myCourses.length === 0 && res.data && res.data.length > 0) {
+            myCourses = res.data;
+          }
+          let html = '';
+          let options = '<option value="">-- Choose Assigned Course --</option>';
+
+          if (myCourses.length === 0) {
+            html = '<tr><td colspan="6" class="text-center py-4 text-muted">No course sections assigned to your account.</td></tr>';
+          } else {
+            myCourses.forEach(c => {
+              const enrolled = c.enrolledCount || 0;
+              const cap = c.capacity || 30;
+              const pct = Math.min(100, Math.round((enrolled / cap) * 100));
+
+              html += `
+                <tr>
+                  <td><span class="mono-tag bg-white border text-dark fw-bold">${c.courseCode}</span></td>
+                  <td>
+                    <strong class="font-serif text-dark d-block">${c.title}</strong>
+                    <small class="text-muted">${c.department}</small>
+                  </td>
+                  <td><span class="badge bg-light text-dark border">${c.credits || 3} Cr</span></td>
+                  <td>
+                    <div class="d-flex justify-content-between small mb-1">
+                      <span class="text-muted">${enrolled} / ${cap} seats</span>
+                      <span class="fw-semibold text-dark">${pct}%</span>
+                    </div>
+                    <div class="progress" style="height: 5px; background: var(--canvas-subtle);">
+                      <div class="progress-bar" style="width: ${pct}%; background: var(--brand-terracotta);"></div>
+                    </div>
+                  </td>
+                  <td>
+                    <small class="text-muted"><i class="fa-regular fa-file-lines me-1 text-primary"></i>Handouts Active</small>
+                  </td>
+                  <td class="text-end">
+                    <div class="d-flex justify-content-end gap-2">
+                      <button class="btn-editorial-outline btn-sm py-1 px-2 view-roster-btn" data-course-id="${c._id}" data-course-code="${c.courseCode}" data-course-title="${c.title}" data-bs-toggle="modal" data-bs-target="#rosterModal">
+                        <i class="fa-solid fa-users me-1"></i> Roster
+                      </button>
+                      <a href="attendance.html?courseId=${c._id}" class="btn-editorial-primary btn-sm py-1 px-3">
+                        <i class="fa-solid fa-clipboard-user me-1"></i> Terminal
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              `;
+              options += `<option value="${c.courseCode}">${c.courseCode} — ${c.title}</option>`;
+            });
+          }
+          $('#facultyCoursesList').html(html);
+          $('#courseSelect').html(options);
+
+          // Render materials matching user's courses
+          renderMaterials();
+        });
+
+        // Roster Modal Handler
+        $(document).on('click', '.view-roster-btn', function() {
+          const courseId = $(this).data('course-id');
+          const code = $(this).data('course-code');
+          const title = $(this).data('course-title');
+
+          $('#rosterModalTitle').text(`${code} Class Roster & Exam Compliance`);
+          $('#rosterModalSubtitle').text(title);
+          $('#rosterModalBody').html('<tr><td colspan="4" class="text-center py-4 text-muted"><div class="editorial-spinner mx-auto mb-2"></div>Loading students...</td></tr>');
+
+          $.when(
+            API.getCourseStudents(courseId),
+            API.getCourseAttendanceStats(courseId)
+          ).done((sRes, statsRes) => {
+            const students = sRes[0].data || [];
+            const stats = statsRes[0].data || {};
+            $('#rosterStudentCount').text(`${students.length} Students Enrolled`);
+
+            let html = '';
+            if (students.length === 0) {
+              html = '<tr><td colspan="4" class="text-center py-4 text-muted">No students currently enrolled in this section.</td></tr>';
+            } else {
+              students.forEach(s => {
+                const st = stats[s._id] || { present: 0, absent: 0, late: 0, total: 0 };
+                const eff = st.present + (st.late * 0.75);
+                const perc = st.total === 0 ? 0 : Math.round((eff / st.total) * 100);
+                const isAtRisk = st.total > 0 && perc < 75;
+
+                html += `
+                  <tr>
+                    <td>
+                      <strong class="font-serif text-dark d-block">${s.name}</strong>
+                      <span class="mono-tag" style="background:#E2E8F0; color:#334155; font-size:0.7rem;">${s.studentId || 'N/A'}</span>
+                    </td>
+                    <td class="small text-muted">${s.email}</td>
+                    <td>
+                      <span class="fw-bold font-serif ${isAtRisk ? 'text-danger' : 'text-dark'}">${perc}%</span>
+                      <small class="text-muted ms-1">(${st.present}P / ${st.absent}A in ${st.total})</small>
+                    </td>
+                    <td class="text-end">
+                      <span class="badge-status ${isAtRisk ? 'rejected' : 'approved'}">
+                        ${isAtRisk ? '<i class="fa-solid fa-triangle-exclamation me-1"></i>At Risk (<75%)' : 'Eligible'}
+                      </span>
+                    </td>
+                  </tr>
+                `;
+              });
+            }
+            $('#rosterModalBody').html(html);
+          });
+        });
+
+        // Search in Roster Modal
+        $('#rosterSearch').on('keyup', function() {
+          const q = $(this).val().toLowerCase().trim();
+          $('#rosterModalBody tr').each(function() {
+            const text = $(this).text().toLowerCase();
+            $(this).toggle(text.indexOf(q) > -1);
+          });
+        });
+
+        // Upload Form Handler
+        $('#uploadForm').submit(function(e) {
+          e.preventDefault();
+          const course = $('#courseSelect').val();
+          const title = $('#materialTitle').val();
+          const type = $('#materialType').val();
+
+          publishedMaterials.unshift({
+            id: Date.now(),
+            course: course,
+            title: title,
+            type: type,
+            size: '1.8 MB',
+            date: 'Today'
+          });
+
+          $('#uploadContentModal').modal('hide');
+          showAlert(`Handout "${title}" distributed to enrolled student dashboards!`, 'success');
+          renderMaterials();
+
+          if (window.triggerCelebrationBurst) {
+            window.triggerCelebrationBurst(window.innerWidth / 2, window.innerHeight / 2);
+          }
+          this.reset();
+        });
+
+        window.deleteMaterial = function(id) {
+          if (!confirm('Remove this course handout?')) return;
+          publishedMaterials = publishedMaterials.filter(m => m.id !== id);
+          $(`#material-${id}`).fadeOut(300, function() { $(this).remove(); });
+          showAlert('Handout removed from student downloads.', 'info');
+        };
+      }, 300);
     });
   </script>
 </body>

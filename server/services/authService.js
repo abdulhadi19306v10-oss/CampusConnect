@@ -32,7 +32,10 @@ class AuthService {
       throw new Error('Invalid credentials');
     }
 
-    return this.generateToken(user);
+    const token = this.generateToken(user);
+    const userObj = user.toObject ? user.toObject() : { ...user };
+    delete userObj.password;
+    return { token, user: userObj };
   }
 
   generateToken(user) {

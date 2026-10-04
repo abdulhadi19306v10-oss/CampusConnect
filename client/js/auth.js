@@ -13,22 +13,28 @@ $(document).ready(function() {
   const isAdmin = adminPages.some(page => currentPage.includes(page));
   const isFaculty = facultyPages.some(page => currentPage.includes(page));
 
+  const normalizedRole = (role || '').toUpperCase();
+
   if (isProtected && !token) {
-    window.location.href = 'login.html';
+    const roleParam = isFaculty ? '?role=faculty' : (isAdmin ? '?role=admin' : '');
+    window.location.href = '/login.html' + roleParam;
+    return;
   }
 
-  if (isAdmin && role !== 'ADMIN') {
-    window.location.href = '../login.html';
+  if (isAdmin && normalizedRole !== 'ADMIN') {
+    window.location.href = '/login.html?role=admin';
+    return;
   }
   
-  if (isFaculty && role !== 'FACULTY') {
-    window.location.href = '../login.html';
+  if (isFaculty && normalizedRole !== 'FACULTY' && normalizedRole !== 'ADMIN') {
+    window.location.href = '/login.html?role=faculty';
+    return;
   }
 
   // Populate User Info if logged in
   if (token) {
     API.me().done(function(res) {
-      if(res.success) {
+      if(res.success && res.data) {
         $('.user-name').text(res.data.name);
         localStorage.setItem('role', res.data.role);
         localStorage.setItem('user', JSON.stringify(res.data));
@@ -38,15 +44,20 @@ $(document).ready(function() {
       localStorage.removeItem('token');
       localStorage.removeItem('role');
       localStorage.removeItem('user');
-      if (isProtected) window.location.href = 'login.html';
+      if (isProtected) {
+        const roleParam = isFaculty ? '?role=faculty' : (isAdmin ? '?role=admin' : '');
+        window.location.href = '/login.html' + roleParam;
+      }
     });
   }
 
   $('#logoutBtn').click(function(e) {
     e.preventDefault();
+    const prevRole = (localStorage.getItem('role') || '').toLowerCase();
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     localStorage.removeItem('user');
-    window.location.href = '/login.html';
+    const roleParam = (prevRole === 'faculty' || prevRole === 'admin') ? `?role=${prevRole}` : '';
+    window.location.href = '/login.html' + roleParam;
   });
 });

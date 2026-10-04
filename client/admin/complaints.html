@@ -2,69 +2,95 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Complaints - CampusConnect</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Grievances — CampusConnect Admin</title>
+  
+  <!-- Bootstrap 5 & FontAwesome -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Editorial Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Design System CSS -->
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
+
+  <!-- Navigation -->
   <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container-fluid px-4">
-      <a class="navbar-brand" href="dashboard.html"><i class="fa-solid fa-graduation-cap me-2"></i>CampusConnect Admin</a>
-      <div class="d-flex align-items-center">
-        <a href="../index.html" class="btn btn-sm btn-outline-secondary me-3"><i class="fa-solid fa-house"></i> Home</a>
-        <span class="me-3 fw-medium text-secondary user-name">Admin</span>
-        <button id="logoutBtn" class="btn btn-outline-danger btn-sm">Logout</button>
+      <a class="navbar-brand" href="dashboard.html">
+        <div class="brand-icon-editorial" style="background-color: var(--brand-navy);">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        CampusConnect <span class="font-sans fw-normal text-muted ms-2" style="font-size: 1rem;">Administrator</span>
+      </a>
+      
+      <div class="d-flex align-items-center gap-3">
+        <span class="mono-tag bg-white text-muted border d-none d-sm-inline-block">Grievance Resolution</span>
+        <span class="fw-semibold text-dark user-name small d-none d-md-inline">System Admin</span>
+        <button id="logoutBtn" class="btn-editorial-outline btn-sm py-1 px-3" style="font-size: 0.82rem;">Logout</button>
       </div>
     </div>
   </nav>
 
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-2 d-none d-md-block sidebar px-0">
+      <!-- Sidebar -->
+      <div class="col-md-2 d-none d-md-block sidebar-editorial">
         <div class="nav flex-column">
-          <a class="nav-link" href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
-          <a class="nav-link" href="students.html"><i class="fa-solid fa-users"></i> Students</a>
+          <a class="nav-link" href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Analytics</a>
+          <a class="nav-link" href="students.html"><i class="fa-solid fa-user-graduate"></i> Students</a>
           <a class="nav-link" href="faculty.html"><i class="fa-solid fa-chalkboard-user"></i> Faculty</a>
-          <a class="nav-link" href="courses.html"><i class="fa-solid fa-book"></i> Courses</a>
-          <a class="nav-link" href="bookings.html"><i class="fa-solid fa-building"></i> Bookings</a>
-          <a class="nav-link active" href="complaints.html"><i class="fa-solid fa-comment-dots"></i> Complaints</a>
-          <a class="nav-link" href="announcements.html"><i class="fa-solid fa-bullhorn"></i> Announcements</a>
+          <a class="nav-link" href="courses.html"><i class="fa-solid fa-book-bookmark"></i> Courses</a>
+          <a class="nav-link" href="bookings.html"><i class="fa-solid fa-building-columns"></i> Facility Requests</a>
+          <a class="nav-link active" href="complaints.html"><i class="fa-solid fa-comment-dots"></i> Complaints Desk</a>
+          <a class="nav-link" href="announcements.html"><i class="fa-solid fa-bullhorn"></i> Broadcasts</a>
         </div>
       </div>
 
-      <div class="col-md-10 dashboard-content bg-light">
+      <!-- Main Content -->
+      <div class="col-md-10 p-4 p-md-5">
         <div id="alertContainer"></div>
-        <div class="card">
-          <div class="card-header bg-white pt-4 pb-0 border-bottom-0">
-            <h5 class="fw-bold">Manage Complaints</h5>
-          </div>
-          <div class="card-body">
-            
-            <div class="mb-3 d-flex justify-content-end table-search-container">
-              <div class="input-group" style="width: 250px;">
-                <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-search text-muted"></i></span>
-                <input type="text" class="form-control border-start-0 bg-light page-search" placeholder="Search...">
-              </div>
-            </div>
-            <div class="table-responsive">
-              <table class="table table-hover align-middle">
-                <thead class="table-light">
-                  <tr>
-                    <th>Student</th>
-                    <th>Issue</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody id="complaintsTable">
-                  <tr><td colspan="4" class="text-center">Loading...</td></tr>
-                </tbody>
-              </table>
-            </div>
+
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-2 border-bottom border-light-subtle gap-3">
+          <div>
+            <span class="mono-tag" style="background: var(--brand-terracotta-light); color: var(--brand-terracotta);">Student Support</span>
+            <h1 class="font-serif display-6 mb-1 fw-bold mt-1">Grievance & Issue Resolution Desk</h1>
+            <p class="text-muted small mb-0">Track active student support tickets, record departmental comments, and close inquiries.</p>
           </div>
         </div>
+
+        <div class="editorial-card p-4 anime-card" style="background: #FFFFFF;">
+          <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-light-subtle">
+            <h4 class="font-serif fw-bold mb-0">Active Support Tickets</h4>
+            <div class="input-group" style="max-width: 250px;">
+              <span class="input-group-text bg-white border-end-0" style="border-color: var(--border-editorial);"><i class="fa-solid fa-search text-muted small"></i></span>
+              <input type="text" class="form-control form-editorial border-start-0 py-1" id="complaintSearch" placeholder="Filter tickets...">
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead style="background: var(--canvas-subtle); border-bottom: 2px solid var(--border-editorial);">
+                <tr>
+                  <th class="py-3 font-serif">Applicant</th>
+                  <th class="py-3 font-serif">Issue & Category</th>
+                  <th class="py-3 font-serif">Status</th>
+                  <th class="py-3 font-serif">Resolution Feedback</th>
+                  <th class="py-3 font-serif text-end">Action</th>
+                </tr>
+              </thead>
+              <tbody id="complaintsTable">
+                <tr><td colspan="5" class="text-center py-4 text-muted">Loading grievances...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -72,39 +98,41 @@
   <!-- Resolve Modal -->
   <div class="modal fade" id="resolveModal" tabindex="-1">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header border-bottom-0">
-          <h5 class="modal-title fw-bold">Resolve Complaint</h5>
+      <div class="modal-content border-0 shadow-lg" style="border-radius: var(--radius-md);">
+        <div class="modal-header border-bottom border-light-subtle p-4 pb-2">
+          <h5 class="modal-title font-serif fw-bold">Update Ticket Status & Response</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body p-4">
           <input type="hidden" id="complaintId">
           <div class="mb-3">
-            <label class="form-label text-muted fw-semibold">Status</label>
-            <select class="form-select" id="newStatus">
+            <label class="form-label text-muted small fw-semibold">TICKET STATUS</label>
+            <select class="form-select form-editorial" id="newStatus">
               <option value="IN_PROGRESS">In Progress</option>
               <option value="RESOLVED">Resolved</option>
               <option value="CLOSED">Closed</option>
             </select>
           </div>
-          <div class="mb-3">
-            <label class="form-label text-muted fw-semibold">Admin Response</label>
-            <textarea class="form-control" id="adminResponse" rows="3"></textarea>
+          <div class="mb-4">
+            <label class="form-label text-muted small fw-semibold">ADMINISTRATIVE COMMENT / ACTION TAKEN</label>
+            <textarea class="form-control form-editorial" id="adminResponse" rows="4" placeholder="Detail the resolution or steps taken..."></textarea>
           </div>
-        </div>
-        <div class="modal-footer border-top-0">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary" id="saveComplaintBtn">Save</button>
+          <button type="button" class="btn-editorial-primary w-100 py-3 fw-bold" id="saveComplaintBtn">
+            Save Resolution & Notify Student
+          </button>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  
+  <script src="../js/anime.min.js"></script>
+  <script src="../js/animations.js"></script>
   <script src="../js/api.js"></script>
   <script src="../js/auth.js"></script>
+
   <script>
     $(document).ready(function() {
       loadComplaints();
@@ -113,21 +141,42 @@
       function loadComplaints() {
         API.getAllComplaints().done(res => {
           let html = '';
-          res.data.forEach(c => {
-            let badge = 'secondary';
-            if(c.status === 'OPEN') badge = 'danger';
-            if(c.status === 'IN_PROGRESS') badge = 'warning';
-            if(c.status === 'RESOLVED' || c.status === 'CLOSED') badge = 'success';
+          if (!res.data || res.data.length === 0) {
+            html = '<tr><td colspan="5" class="text-center py-4 text-muted">No student complaints filed.</td></tr>';
+          } else {
+            res.data.forEach(c => {
+              let badgeClass = 'pending';
+              if (c.status === 'RESOLVED' || c.status === 'CLOSED') badgeClass = 'approved';
+              if (c.status === 'OPEN') badgeClass = 'rejected';
 
-            html += `<tr>
-              <td>${c.studentId?.name || 'Unknown'}</td>
-              <td><strong>${c.subject}</strong><br><small class="text-muted">${c.category}</small></td>
-              <td><span class="badge bg-${badge}">${c.status}</span></td>
-              <td>
-                <button class="btn btn-sm btn-primary edit-btn" data-id="${c._id}" data-status="${c.status}" data-resp="${c.adminResponse || ''}">Respond</button>
-              </td>
-            </tr>`;
-          });
+              html += `
+                <tr class="complaint-row">
+                  <td>
+                    <strong class="d-block text-dark">${c.studentId?.name || 'Student'}</strong>
+                    <small class="text-muted">${c.studentId?.email || ''}</small>
+                  </td>
+                  <td>
+                    <strong class="font-serif d-block text-dark">${c.title || c.subject || 'Ticket'}</strong>
+                    <span class="mono-tag bg-white border text-muted">${c.category || 'General'}</span>
+                  </td>
+                  <td>
+                    <span class="badge-status ${badgeClass}">${c.status}</span>
+                  </td>
+                  <td>
+                    <small class="text-muted d-inline-block text-truncate" style="max-width: 200px;">
+                      ${c.adminComment || c.adminResponse || '<i class="text-secondary">No response recorded</i>'}
+                    </small>
+                  </td>
+                  <td class="text-end">
+                    <button class="btn-editorial-primary btn-sm py-1 px-3 edit-btn" 
+                      data-id="${c._id}" data-status="${c.status}" data-resp="${c.adminComment || c.adminResponse || ''}">
+                      Respond
+                    </button>
+                  </td>
+                </tr>
+              `;
+            });
+          }
           $('#complaintsTable').html(html);
         });
       }
@@ -143,28 +192,23 @@
         const id = $('#complaintId').val();
         const data = {
           status: $('#newStatus').val(),
+          adminComment: $('#adminResponse').val(),
           adminResponse: $('#adminResponse').val()
         };
-        
+
         API.updateComplaintStatus(id, data).done(res => {
-          showAlert(res.message, 'success');
+          showAlert(res.message || 'Ticket updated successfully!', 'success');
           resolveModal.hide();
           loadComplaints();
         }).fail(err => {
-          showAlert('Error updating', 'danger');
+          showAlert('Error updating grievance status.', 'danger');
         });
       });
-    });
-  </script>
 
-  <script>
-    $(document).ready(function() {
-      // Global Table Live Search
-      $('.page-search').on('keyup', function() {
-        const value = $(this).val().toLowerCase();
-        // find the closest table-responsive container which is a sibling of the search container
-        $(this).closest('.table-search-container').next('.table-responsive').find('tbody tr').filter(function() {
-          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      $('#complaintSearch').on('keyup', function() {
+        const val = $(this).val().toLowerCase();
+        $('.complaint-row').filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(val) > -1);
         });
       });
     });

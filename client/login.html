@@ -3,105 +3,431 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - CampusConnect</title>
+  <title>Sign In — CampusConnect</title>
+  <meta name="description" content="Sign in to the CampusConnect university management portal.">
+
+  <!-- Bootstrap 5 & FontAwesome -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Editorial Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Design System CSS -->
   <link rel="stylesheet" href="css/style.css">
+
   <style>
-    body { background-color: #f8fafc; height: 100vh; display: flex; align-items: center; justify-content: center; }
-    .login-card { max-width: 400px; width: 100%; padding: 40px; border-radius: 16px; background: white; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
-    .brand-logo { color: #2563eb; font-size: 2rem; font-weight: 800; text-align: center; margin-bottom: 2rem; display: block; text-decoration: none;}
+    .login-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    .login-box {
+      max-width: 960px;
+      width: 100%;
+      background: #FFFFFF;
+      border: 1px solid var(--border-editorial);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+    }
+    .role-segmented-pill {
+      background: var(--canvas-subtle);
+      border: 1px solid var(--border-editorial);
+      border-radius: var(--radius-pill);
+      padding: 4px;
+      display: flex;
+      gap: 4px;
+    }
+    .role-btn {
+      flex: 1;
+      border: 1px solid transparent;
+      background: transparent;
+      padding: 10px 14px;
+      border-radius: var(--radius-pill);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--ink-muted);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
+    .role-btn:hover {
+      color: var(--ink-heading);
+      background: rgba(255, 255, 255, 0.7);
+    }
+    .role-btn.active {
+      background: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+      border-color: rgba(0, 0, 0, 0.08);
+      font-weight: 700;
+    }
+    .role-btn.active#btnRoleStudent {
+      color: #1E40AF;
+    }
+    .role-btn.active#btnRoleFaculty {
+      color: #B91C1C;
+    }
+    .role-btn.active#btnRoleAdmin {
+      color: #B45309;
+    }
+    .input-icon-wrap {
+      position: relative;
+    }
+    .input-icon-wrap i {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--ink-faint);
+    }
+    .input-icon-wrap input {
+      padding-left: 44px;
+    }
+    .quick-login-card {
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid var(--border-editorial);
+      border-radius: var(--radius-md);
+      background: #FFFFFF;
+      padding: 10px 14px;
+    }
+    .quick-login-card:hover {
+      border-color: var(--brand-terracotta);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      transform: translateY(-1px);
+    }
   </style>
 </head>
 <body>
 
-  <div id="loader" class="hidden" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.8);display:none;justify-content:center;align-items:center;z-index:9999;">
-    <div class="spinner-border text-primary" role="status"></div>
+  <!-- Loading Overlay -->
+  <div id="loader" class="hidden">
+    <div class="editorial-spinner"></div>
   </div>
 
-  <div class="login-card">
-    <a href="index.html" class="brand-logo"><i class="fa-solid fa-graduation-cap me-2"></i>CampusConnect</a>
-    <div class="text-center mb-3"><a href="index.html" class="text-decoration-none text-secondary small"><i class="fa-solid fa-arrow-left me-1"></i>Back to Home</a></div>
-    <h4 class="text-center mb-4 fw-bold">Sign In</h4>
-    
-    <div id="alertContainer"></div>
+  <div class="login-container">
+    <div class="login-box anime-login-box">
+      <div class="row g-0">
+        
+        <!-- Left Side: Editorial Banner -->
+        <div class="col-lg-5 p-5 d-none d-lg-flex flex-column justify-content-between" style="background: var(--canvas-subtle); border-right: 1px solid var(--border-editorial);">
+          <div>
+            <a href="index.html" class="d-flex align-items-center text-decoration-none mb-4">
+              <div class="brand-icon-editorial" style="width: 34px; height: 34px; font-size: 0.9rem;">
+                <i class="fa-solid fa-graduation-cap"></i>
+              </div>
+              <span class="font-serif fw-bold text-dark fs-5">CampusConnect</span>
+            </a>
+            
+            <span class="mono-tag bg-white text-muted border mb-3 d-inline-block">Universal Sign-In</span>
+            <h2 class="font-serif display-6 fw-bold mt-2 mb-3" style="line-height: 1.15;">
+              Select your role to access your portal.
+            </h2>
+            <p class="text-muted small" style="line-height: 1.6;">
+              Unified access point for Students, Faculty Members, and Campus Administrators. Choose your persona below to immediately access your workspace.
+            </p>
+          </div>
 
-    <form id="loginForm" onsubmit="return false;">
-      <div class="mb-3">
-        <label class="form-label text-muted fw-semibold">Email Address</label>
-        <div class="input-group">
-          <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-envelope text-muted"></i></span>
-          <input type="email" class="form-control border-start-0 bg-light" id="email" required placeholder="name@campusconnect.edu">
+          <div class="p-3 bg-white rounded-3 border">
+            <div class="d-flex align-items-center gap-2 mb-1">
+              <i class="fa-solid fa-shield-halved text-success"></i>
+              <strong class="small text-dark">Strict Layered Security</strong>
+            </div>
+            <p class="text-muted mb-0" style="font-size: 0.76rem;">
+              Secured with stateless JSON Web Tokens and bcrypt salted hashing.
+            </p>
+          </div>
         </div>
-      </div>
-      <div class="mb-4">
-        <label class="form-label text-muted fw-semibold">Password</label>
-        <div class="input-group">
-          <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-lock text-muted"></i></span>
-          <input type="password" class="form-control border-start-0 bg-light" id="password" required placeholder="••••••••">
+
+        <!-- Right Side: Login Form -->
+        <div class="col-lg-7 p-4 p-md-5">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="font-serif h3 mb-0 fw-bold">Sign In</span>
+            <a href="index.html" class="text-decoration-none text-muted small">
+              <i class="fa-solid fa-arrow-left me-1"></i> Back to Home
+            </a>
+          </div>
+
+          <!-- Role Selector Segmented Controls -->
+          <div class="mb-4">
+            <label class="form-label text-muted small fw-semibold d-flex justify-content-between align-items-center mb-2">
+              <span>SELECT USER ROLE</span>
+              <span class="mono-tag" style="background:#DBEAFE; color:#1E40AF;" id="selectedRoleTag">Student</span>
+            </label>
+            <div class="role-segmented-pill">
+              <button type="button" class="role-btn active" id="btnRoleStudent" onclick="selectRole('student')">
+                <i class="fa-solid fa-user-graduate me-1 text-primary"></i> Student
+              </button>
+              <button type="button" class="role-btn" id="btnRoleFaculty" onclick="selectRole('faculty')">
+                <i class="fa-solid fa-chalkboard-user me-1 text-danger"></i> Faculty
+              </button>
+              <button type="button" class="role-btn" id="btnRoleAdmin" onclick="selectRole('admin')">
+                <i class="fa-solid fa-shield-halved me-1 text-warning"></i> Admin
+              </button>
+            </div>
+            <div class="mt-2 p-2 rounded-2 border small text-muted d-flex align-items-center gap-2" id="roleDescriptionBox" style="background: var(--canvas-subtle); font-size: 0.78rem;">
+              <i class="fa-solid fa-circle-info text-primary"></i>
+              <span id="roleDescriptionText">Signing in as <strong>Student</strong> (Alex Morgan — Course enrollment, timetable, attendance pulse).</span>
+            </div>
+          </div>
+
+          <div id="alertContainer"></div>
+
+          <!-- Standard Credentials Form -->
+          <form id="loginForm" onsubmit="event.preventDefault(); return false;">
+            <div class="mb-3">
+              <label class="form-label text-muted small fw-semibold">EMAIL ADDRESS</label>
+              <div class="input-icon-wrap">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" class="form-control form-editorial" id="email" required placeholder="name@campusconnect.edu" value="student1@campusconnect.edu">
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <div class="d-flex justify-content-between">
+                <label class="form-label text-muted small fw-semibold">PASSWORD</label>
+              </div>
+              <div class="input-icon-wrap">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" class="form-control form-editorial" id="password" required placeholder="••••••••" value="student123">
+              </div>
+            </div>
+
+            <button type="button" id="loginBtn" onclick="submitLogin();" class="btn-editorial-primary w-100 py-3 fw-bold">
+              <span id="submitBtnText">Sign In as Student</span> <i class="fa-solid fa-arrow-right ms-2"></i>
+            </button>
+          </form>
         </div>
+
       </div>
-      <button type="button" id="loginBtn" class="btn btn-primary w-100 py-2 fw-bold mb-3">Login</button>
-      
-      <div class="text-center text-muted small">
-        <p>Demo Admin: admin@campusconnect.edu / admin123</p>
-        <p>Demo Student: student1@campusconnect.edu / student123</p>
-      </div>
-    </form>
+    </div>
   </div>
+
+  <!-- Anime.js & Animation Engine -->
+  <script src="js/anime.min.js"></script>
+  <script src="js/animations.js"></script>
 
   <script>
-    // Completely standalone, un-cacheable Vanilla JS logic
-    const urlParams = new URLSearchParams(window.location.search);
-    if(urlParams.get('role') === 'admin') {
-      document.getElementById('email').value = 'admin@campusconnect.edu';
-      document.getElementById('password').value = 'admin123';
+    let activeSelectedRole = 'student';
+
+    // Role selection helper: updates UI buttons, descriptions, and input values
+    function selectRole(role) {
+      activeSelectedRole = role;
+      try {
+        sessionStorage.setItem('preferredRole', role);
+      } catch (e) {}
+
+      const btnStudent = document.getElementById('btnRoleStudent');
+      const btnFaculty = document.getElementById('btnRoleFaculty');
+      const btnAdmin = document.getElementById('btnRoleAdmin');
+      const roleTag = document.getElementById('selectedRoleTag');
+      const roleDesc = document.getElementById('roleDescriptionText');
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      const submitBtnText = document.getElementById('submitBtnText');
+
+      if (btnStudent) btnStudent.classList.remove('active');
+      if (btnFaculty) btnFaculty.classList.remove('active');
+      if (btnAdmin) btnAdmin.classList.remove('active');
+
+      if (role === 'admin') {
+        if (btnAdmin) btnAdmin.classList.add('active');
+        if (emailInput) emailInput.value = 'admin@campusconnect.edu';
+        if (passwordInput) passwordInput.value = 'admin123';
+        if (roleTag) {
+          roleTag.textContent = 'Administrator';
+          roleTag.style.background = '#FEF3C7';
+          roleTag.style.color = '#92400E';
+        }
+        if (roleDesc) roleDesc.innerHTML = 'Signing in as <strong>Administrator</strong> (System governance, approvals, user directory).';
+        if (submitBtnText) submitBtnText.textContent = 'Sign In as Administrator';
+      } else if (role === 'faculty') {
+        if (btnFaculty) btnFaculty.classList.add('active');
+        if (emailInput) emailInput.value = 'faculty1@campusconnect.edu';
+        if (passwordInput) passwordInput.value = 'faculty123';
+        if (roleTag) {
+          roleTag.textContent = 'Faculty Member';
+          roleTag.style.background = '#FEE2E2';
+          roleTag.style.color = '#991B1B';
+        }
+        if (roleDesc) roleDesc.innerHTML = 'Signing in as <strong>Faculty Member</strong> (Dr. Smith — Attendance terminal, class rosters, handouts).';
+        if (submitBtnText) submitBtnText.textContent = 'Sign In as Faculty Member';
+      } else {
+        if (btnStudent) btnStudent.classList.add('active');
+        if (emailInput) emailInput.value = 'student1@campusconnect.edu';
+        if (passwordInput) passwordInput.value = 'student123';
+        if (roleTag) {
+          roleTag.textContent = 'Student';
+          roleTag.style.background = '#DBEAFE';
+          roleTag.style.color = '#1E40AF';
+        }
+        if (roleDesc) roleDesc.innerHTML = 'Signing in as <strong>Student</strong> (Alex Morgan — Course enrollment, timetable, attendance pulse).';
+        if (submitBtnText) submitBtnText.textContent = 'Sign In as Student';
+      }
+
+      if (typeof anime !== 'undefined') {
+        anime({
+          targets: '#loginForm',
+          opacity: [0.85, 1],
+          translateY: [3, 0],
+          duration: 180,
+          easing: 'easeOutQuad'
+        });
+      }
     }
 
-    document.getElementById('loginBtn').addEventListener('click', async function() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      
-      if(!email || !password) return;
+    // Trigger Login
+    function submitLogin() {
+      const email = (document.getElementById('email').value || '').trim();
+      const password = (document.getElementById('password').value || '').trim();
+      executeLogin(email, password);
+    }
 
-      document.getElementById('loader').style.display = 'flex';
+    // Core Login Execution
+    async function executeLogin(email, password) {
+      if (!email || !password) {
+        document.getElementById('alertContainer').innerHTML = `
+          <div class="alert alert-warning py-2 small d-flex align-items-center gap-2">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span>Please enter both email and password.</span>
+          </div>
+        `;
+        return;
+      }
+
+      const loginBtn = document.getElementById('loginBtn');
+      const originalBtnHtml = loginBtn.innerHTML;
+      loginBtn.disabled = true;
+      loginBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Verifying Credentials...';
       document.getElementById('alertContainer').innerHTML = '';
-      
+
       try {
         const res = await fetch('/api/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password })
         });
-        
+
         const data = await res.json();
-        
+
         if (data.success && data.token) {
           localStorage.setItem('token', data.token);
-          
-          const meRes = await fetch('/api/auth/me', {
-            headers: { 'Authorization': 'Bearer ' + data.token }
-          });
-          const meData = await meRes.json();
-          
-          localStorage.setItem('role', meData.data.role);
-          localStorage.setItem('user', JSON.stringify(meData.data));
-          
-          if(meData.data.role === 'ADMIN') {
-            window.location.href = 'admin/dashboard.html';
-          } else if(meData.data.role === 'FACULTY') {
-            window.location.href = 'faculty/dashboard.html';
-          } else {
-            window.location.href = 'dashboard.html';
+
+          // Get confirmed role from server response or fallback
+          const userRole = (data.user?.role || activeSelectedRole.toUpperCase()).toUpperCase();
+          localStorage.setItem('role', userRole);
+          if (data.user) {
+            localStorage.setItem('user', JSON.stringify(data.user));
           }
+
+          if (window.triggerCelebrationBurst) {
+            window.triggerCelebrationBurst(window.innerWidth / 2, window.innerHeight / 2);
+          }
+
+          loginBtn.innerHTML = '<i class="fa-solid fa-check me-2"></i>Redirecting to Portal...';
+
+          let targetUrl = '/dashboard.html';
+          if (userRole === 'ADMIN') {
+            targetUrl = '/admin/dashboard.html';
+          } else if (userRole === 'FACULTY') {
+            targetUrl = '/faculty/dashboard.html';
+          }
+
+          setTimeout(() => {
+            window.location.replace(targetUrl);
+          }, 200);
+
         } else {
-          document.getElementById('loader').style.display = 'none';
-          document.getElementById('alertContainer').innerHTML = `<div class="alert alert-danger">${data.message || 'Login failed'}</div>`;
+          loginBtn.disabled = false;
+          loginBtn.innerHTML = originalBtnHtml;
+          document.getElementById('alertContainer').innerHTML = `
+            <div class="alert alert-danger py-2 small d-flex align-items-center gap-2">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              <span>${data.message || 'Invalid email or password.'}</span>
+            </div>
+          `;
+          if (typeof anime !== 'undefined') {
+            anime({
+              targets: '.login-box',
+              translateX: [-10, 10, -8, 8, -4, 4, 0],
+              duration: 400,
+              easing: 'easeInOutQuad'
+            });
+          }
         }
       } catch (err) {
-        document.getElementById('loader').style.display = 'none';
-        document.getElementById('alertContainer').innerHTML = `<div class="alert alert-danger">Network Error. Is the backend running?</div>`;
+        loginBtn.disabled = false;
+        loginBtn.innerHTML = originalBtnHtml;
+        document.getElementById('alertContainer').innerHTML = `
+          <div class="alert alert-danger py-2 small d-flex align-items-center gap-2">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>Network connection error. Please verify the backend is active.</span>
+          </div>
+        `;
+      }
+    }
+
+    // Initialize on DOM ready
+    document.addEventListener('DOMContentLoaded', () => {
+      // Attach explicit click handlers to role buttons and login button
+      const btnStudent = document.getElementById('btnRoleStudent');
+      const btnFaculty = document.getElementById('btnRoleFaculty');
+      const btnAdmin = document.getElementById('btnRoleAdmin');
+      const loginBtn = document.getElementById('loginBtn');
+      const loginForm = document.getElementById('loginForm');
+
+      if (btnStudent) btnStudent.addEventListener('click', () => selectRole('student'));
+      if (btnFaculty) btnFaculty.addEventListener('click', () => selectRole('faculty'));
+      if (btnAdmin) btnAdmin.addEventListener('click', () => selectRole('admin'));
+      if (loginBtn) loginBtn.addEventListener('click', (e) => { e.preventDefault(); submitLogin(); });
+      if (loginForm) loginForm.addEventListener('submit', (e) => { e.preventDefault(); submitLogin(); });
+
+      // Attach Enter key submission to inputs
+      ['email', 'password'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              submitLogin();
+            }
+          });
+        }
+      });
+
+      // Check URL parameters or stored session role on load
+      const urlParams = new URLSearchParams(window.location.search);
+      let roleParam = urlParams.get('role');
+      if (!roleParam) {
+        try {
+          roleParam = sessionStorage.getItem('preferredRole');
+        } catch (e) {}
+      }
+
+      if (roleParam === 'admin') {
+        selectRole('admin');
+      } else if (roleParam === 'faculty') {
+        selectRole('faculty');
+      } else {
+        selectRole('student');
+      }
+
+      if (typeof anime !== 'undefined') {
+        anime({
+          targets: '.anime-login-box',
+          translateY: [30, 0],
+          opacity: [0, 1],
+          duration: 600,
+          easing: 'easeOutCubic'
+        });
       }
     });
   </script>

@@ -3,72 +3,165 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CampusConnect - The Modern University Portal</title>
-  <meta name="description" content="CampusConnect is a comprehensive university management portal for students and administration.">
+  <title>CampusConnect — Modern Academic Operating System</title>
+  <meta name="description" content="CampusConnect is an enterprise-grade university management platform featuring automated course enrollments, faculty attendance terminals, collision-free facility reservations, and governance.">
+  
+  <!-- Bootstrap 5 & FontAwesome -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Editorial Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Design System CSS -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  
+
+  <!-- Floating Ambient Geometry for Anime.js Physics -->
+  <div class="floating-geo" style="top: 120px; left: 5%; width: 48px; height: 48px; border: 2px dashed rgba(194, 65, 12, 0.25); border-radius: 50%;"></div>
+  <div class="floating-geo" style="top: 260px; right: 8%; width: 36px; height: 36px; background: rgba(30, 58, 138, 0.08); border-radius: 8px; transform: rotate(45deg);"></div>
+  <div class="floating-geo" style="top: 580px; left: 3%; width: 28px; height: 28px; background: rgba(217, 119, 6, 0.12); border-radius: 50%;"></div>
+
+  <!-- Editorial Navigation Bar -->
   <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
-      <a class="navbar-brand d-flex align-items-center" href="index.html">
-        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 36px; height: 36px; background: linear-gradient(135deg, #4f46e5, #ec4899) !important;">
-          <i class="fa-solid fa-graduation-cap" style="font-size: 1rem;"></i>
+      <a class="navbar-brand" href="index.html">
+        <div class="brand-icon-editorial">
+          <i class="fa-solid fa-graduation-cap"></i>
         </div>
         CampusConnect
       </a>
+      
       <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
+      
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto align-items-center">
-          <li class="nav-item mx-2"><a class="nav-link fw-medium" href="#features">Features</a></li>
-          <li class="nav-item mx-2"><a class="nav-link fw-medium" href="#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+          <li class="nav-item"><a class="nav-link" href="#stakeholders">Portals</a></li>
+          <li class="nav-item"><a class="nav-link" href="#metrics">Metrics</a></li>
+          <li class="nav-item"><a class="nav-link" href="#architecture">Architecture</a></li>
           <li class="nav-item ms-lg-4 mt-3 mt-lg-0">
-            <a class="btn btn-outline-dark rounded-pill px-4 fw-semibold me-2" href="login.html">Login</a>
-            <a class="btn btn-primary-gradient rounded-pill px-4" href="login.html?role=admin">Admin Portal</a>
+            <!-- Single Login Button: User picks their role at sign-in -->
+            <a class="btn-editorial-primary px-4 py-2" href="login.html">
+              <i class="fa-solid fa-arrow-right-to-bracket me-2"></i> Sign In
+            </a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <header class="hero-section">
+  <!-- Hero Section -->
+  <header class="editorial-hero">
     <div class="container">
-      <div class="row align-items-center">
-        <div class="col-lg-6 text-start animate-fade-in" style="animation-delay: 0.1s;">
-          <div class="d-inline-flex align-items-center bg-white bg-opacity-10 rounded-pill px-3 py-2 mb-4 border border-light border-opacity-25">
-            <span class="badge bg-primary rounded-pill me-2">New</span>
-            <span class="small fw-medium text-light">Version 2.0 with AI Insights is Live</span>
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <div class="hero-pill-badge">
+            <span class="dot"></span>
+            <span>Version 2.0 • Layered Architecture Standard</span>
           </div>
-          <h1>Elevate Your<br>Campus Experience.</h1>
-          <p class="lead mb-5 text-light text-opacity-75" style="font-weight: 300; font-size: 1.25rem;">Seamlessly manage your courses, book advanced facilities, and stay connected with real-time university updates in one beautiful ecosystem.</p>
-          <div class="d-flex flex-wrap gap-3">
-            <a href="login.html" class="btn btn-light rounded-pill btn-lg px-5 text-primary fw-bold shadow-sm d-flex align-items-center">
-              Enter Student Portal <i class="fa-solid fa-arrow-right ms-2"></i>
+          
+          <h1 class="hero-title anime-hero-title">
+            The unified operating system for <em>academic excellence.</em>
+          </h1>
+          
+          <p class="hero-lead anime-hero-lead">
+            A cohesive campus operations platform for Students, Faculty, and Administrators — featuring automated course registration, interactive faculty attendance tracking with exam eligibility checks, collision-free facility booking, and governance.
+          </p>
+          
+          <!-- Single CTA Button with Role Hint -->
+          <div class="anime-hero-cta">
+            <a href="login.html" class="btn-editorial-primary btn-lg px-5 py-3 fw-bold d-inline-flex align-items-center">
+              Sign In to CampusConnect <i class="fa-solid fa-arrow-right ms-3"></i>
             </a>
+            <div class="d-flex align-items-center gap-2 mt-3 text-muted small">
+              <i class="fa-solid fa-circle-check text-success"></i>
+              <span>One unified gateway — select <strong>Student</strong>, <strong>Faculty</strong>, or <strong>Administrator</strong> at sign-in.</span>
+            </div>
           </div>
         </div>
-        <div class="col-lg-6 mt-5 mt-lg-0 text-center animate-fade-in" style="animation-delay: 0.3s;">
-          <div class="position-relative">
-            <img src="img/campus_hero.jpg" alt="University Campus" class="img-fluid rounded-4 shadow-lg border border-light border-opacity-25" style="transform: rotate(2deg); transition: transform 0.5s ease; min-height: 400px; object-fit: cover; width: 100%;">
-            <div class="position-absolute top-0 start-0 w-100 h-100 bg-gradient rounded-4" style="background: linear-gradient(45deg, rgba(79,70,229,0.2), transparent);"></div>
-            <!-- Floating Elements -->
-            <div class="position-absolute bg-white rounded-3 shadow-lg p-3 d-flex align-items-center" style="bottom: -20px; left: -20px; animation: pulse 4s infinite alternate;">
-              <div class="bg-success bg-opacity-10 p-2 rounded text-success me-3"><i class="fa-solid fa-check-circle fs-4"></i></div>
-              <div class="text-start">
-                <h6 class="mb-0 fw-bold text-dark">Enrollment Confirmed</h6>
-                <small class="text-muted">SE101 - Intro to SE</small>
+
+        <div class="col-lg-6">
+          <div class="position-relative anime-hero-preview">
+            <!-- Main Hero Card Preview -->
+            <div class="editorial-card p-4 shadow-lg border-2" style="background: #FFFFFF;">
+              <div class="d-flex align-items-center justify-content-between pb-3 mb-3 border-bottom border-light-subtle">
+                <div class="d-flex align-items-center gap-2">
+                  <div style="width: 12px; height: 12px; border-radius: 50%; background: #EF4444;"></div>
+                  <div style="width: 12px; height: 12px; border-radius: 50%; background: #F59E0B;"></div>
+                  <div style="width: 12px; height: 12px; border-radius: 50%; background: #10B981;"></div>
+                  <span class="ms-2 small text-muted font-monospace">campusconnect.internal/dashboard</span>
+                </div>
+                <span class="badge-status approved">Live Connected</span>
+              </div>
+
+              <!-- Inside Preview Widget Mockup -->
+              <div class="row g-3">
+                <div class="col-12">
+                  <div class="p-3 rounded-3" style="background: var(--canvas-subtle); border: 1px solid var(--border-editorial-subtle);">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <span class="mono-tag bg-white text-dark border">TODAY'S SCHEDULE</span>
+                        <h5 class="font-serif mt-2 mb-1">Introduction to Software Engineering (SE101)</h5>
+                        <p class="text-muted small mb-0"><i class="fa-solid fa-location-dot me-1 text-danger"></i> Room 101 • Dr. Smith • 09:00 AM</p>
+                      </div>
+                      <span class="badge-status approved">Active Section</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-6">
+                  <div class="p-3 rounded-3 bg-white border">
+                    <span class="text-muted small text-uppercase fw-semibold">Attendance Pulse</span>
+                    <div class="d-flex align-items-baseline gap-2 mt-1">
+                      <span class="h4 mb-0 fw-bold font-serif">88%</span>
+                      <span class="text-success small fw-semibold">Eligible</span>
+                    </div>
+                    <div class="progress mt-2" style="height: 6px;">
+                      <div class="progress-bar" style="width: 88%; background-color: var(--brand-sage);"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-6">
+                  <div class="p-3 rounded-3 bg-white border">
+                    <span class="text-muted small text-uppercase fw-semibold">Facility Booking</span>
+                    <div class="d-flex align-items-baseline gap-2 mt-1">
+                      <span class="h6 mb-0 fw-bold">Study Room B</span>
+                    </div>
+                    <span class="badge-status approved mt-2 d-inline-block">Confirmed ✅</span>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="position-absolute bg-white rounded-3 shadow-lg p-3 d-flex align-items-center" style="top: -20px; right: -20px; animation: pulse 5s infinite alternate-reverse;">
-              <div class="bg-primary bg-opacity-10 p-2 rounded text-primary me-3"><i class="fa-solid fa-building fs-4"></i></div>
-              <div class="text-start">
-                <h6 class="mb-0 fw-bold text-dark">Lab Booked</h6>
-                <small class="text-muted">Computer Lab A</small>
+
+            <!-- Floating Micro-Badges -->
+            <div class="floating-badge-card position-absolute bg-white p-3 rounded-3 shadow-lg border" style="bottom: -24px; left: -24px; max-width: 220px;">
+              <div class="d-flex align-items-center gap-2">
+                <div class="p-2 rounded bg-success-subtle text-success">
+                  <i class="fa-solid fa-clipboard-user fs-5"></i>
+                </div>
+                <div>
+                  <div class="fw-bold small text-dark">Faculty Terminal</div>
+                  <div class="text-muted" style="font-size: 0.72rem;">1-Click Attendance & CSV</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="floating-badge-card position-absolute bg-white p-3 rounded-3 shadow-lg border" style="top: -20px; right: -20px; max-width: 220px;">
+              <div class="d-flex align-items-center gap-2">
+                <div class="p-2 rounded bg-primary-subtle text-primary">
+                  <i class="fa-solid fa-layer-group fs-5"></i>
+                </div>
+                <div>
+                  <div class="fw-bold small text-dark">Layered Core</div>
+                  <div class="text-muted" style="font-size: 0.72rem;">Strict 4-Tier Separation</div>
+                </div>
               </div>
             </div>
           </div>
@@ -77,71 +170,343 @@
     </div>
   </header>
 
-  <section id="features" class="py-5 mt-5">
-    <div class="container pt-5">
-      <div class="text-center mb-5 pb-3">
-        <h6 class="text-primary fw-bold text-uppercase tracking-wider">Core Features</h6>
-        <h2 class="display-5 fw-bold mb-3" style="letter-spacing: -1px;">Everything you need to succeed</h2>
-        <p class="text-secondary lead mx-auto" style="max-width: 600px;">A fully integrated, beautifully designed academic ecosystem built specifically for modern students.</p>
-      </div>
-      <div class="row g-5">
-        <div class="col-md-4">
-          <div class="card h-100 p-5 text-center border-0 bg-white">
-            <div class="mb-4 d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-circle" style="width: 80px; height: 80px;">
-              <i class="fa-solid fa-book-open fa-2x"></i>
-            </div>
-            <h4 class="fw-bold mb-3">Course Management</h4>
-            <p class="text-secondary">Browse the catalog, check prerequisites, and enroll in your next semester classes with a single seamless click.</p>
+  <!-- Live Number Counter Metrics (Anime.js Tickers) -->
+  <section id="metrics" class="py-5" style="border-top: 1px solid var(--border-editorial); border-bottom: 1px solid var(--border-editorial); background: #FFFFFF;">
+    <div class="container py-3">
+      <div class="row g-4 text-center">
+        <div class="col-6 col-md-3">
+          <div class="stat-ticker-block border-0">
+            <span class="stat-number" data-target="20" data-suffix="+">0</span>
+            <span class="stat-label">Enrolled Students</span>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="card h-100 p-5 text-center border-0 bg-white">
-            <div class="mb-4 d-inline-flex align-items-center justify-content-center bg-success bg-opacity-10 text-success rounded-circle" style="width: 80px; height: 80px;">
-              <i class="fa-solid fa-building-columns fa-2x"></i>
-            </div>
-            <h4 class="fw-bold mb-3">Facility Booking</h4>
-            <p class="text-secondary">Reserve advanced computer labs, library study rooms, or the sports ground in real-time without the hassle.</p>
+        <div class="col-6 col-md-3">
+          <div class="stat-ticker-block border-0">
+            <span class="stat-number" data-target="5" data-suffix=" Sections">0</span>
+            <span class="stat-label">Active Courses</span>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="card h-100 p-5 text-center border-0 bg-white">
-            <div class="mb-4 d-inline-flex align-items-center justify-content-center bg-warning bg-opacity-10 text-warning rounded-circle" style="width: 80px; height: 80px;">
-              <i class="fa-solid fa-bullhorn fa-2x"></i>
-            </div>
-            <h4 class="fw-bold mb-3">Instant Announcements</h4>
-            <p class="text-secondary">Stay informed with beautiful, organized updates from your department and university administration.</p>
+        <div class="col-6 col-md-3">
+          <div class="stat-ticker-block border-0">
+            <span class="stat-number" data-target="288" data-suffix=" Records">0</span>
+            <span class="stat-label">Logged Attendance</span>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-ticker-block border-0">
+            <span class="stat-number" data-target="100" data-suffix="%">0</span>
+            <span class="stat-label">Conflict-Free Engine</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <footer class="bg-dark text-white py-5 mt-5">
+  <!-- Core Features Bento Grid: 100% Aligned with Platform Capabilities -->
+  <section id="features" class="py-5 my-5">
     <div class="container py-4">
+      <div class="text-center mb-5 pb-2">
+        <span class="mono-tag" style="background: var(--brand-terracotta-light); color: var(--brand-terracotta);">Full Platform Capabilities</span>
+        <h2 class="display-6 font-serif mt-2 mb-3">Architected for clarity, compliance, and speed</h2>
+        <p class="text-muted mx-auto" style="max-width: 650px;">
+          Eliminating fragmented university software with unified workflows, faculty attendance tracking, atomic reservation locks, and strict architectural boundaries.
+        </p>
+      </div>
+
       <div class="row g-4">
-        <div class="col-lg-4">
-          <h4 class="fw-bold mb-3">
-            <i class="fa-solid fa-graduation-cap me-2 text-primary"></i>CampusConnect
-          </h4>
-          <p class="text-white-50">Software Development & Architecture Semester Project showcasing a professional, layered architecture and stunning UI.</p>
+        <!-- Feature 1: Faculty Attendance & Exam Eligibility -->
+        <div class="col-md-6 col-lg-4">
+          <div class="editorial-card h-100 accent-terracotta anime-card p-4">
+            <div class="d-inline-flex p-3 rounded-3 mb-4" style="color: var(--brand-terracotta); background: var(--brand-terracotta-light);">
+              <i class="fa-solid fa-chalkboard-user fs-4"></i>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="mono-tag" style="background:#FEE2E2; color:#991B1B;">Faculty Suite</span>
+              <span class="small text-muted font-monospace">Daily Terminal</span>
+            </div>
+            <h4 class="font-serif fw-bold mb-2">Class Attendance & Exam Eligibility</h4>
+            <p class="text-muted small">
+              Faculty attendance terminal featuring 1-click bulk marking (Present/Absent/Late), session date pre-loading, instant CSV roster export, and real-time detection of students below the 75% exam eligibility threshold.
+            </p>
+          </div>
         </div>
-        <div class="col-lg-2 offset-lg-2">
-          <h6 class="text-uppercase fw-bold mb-3">Platform</h6>
-          <ul class="list-unstyled">
-            <li class="mb-2"><a href="login.html" class="text-white-50 text-decoration-none">Student Portal</a></li>
-            <li class="mb-2"><a href="login.html?role=admin" class="text-white-50 text-decoration-none">Admin Panel</a></li>
-            <li class="mb-2"><a href="#features" class="text-white-50 text-decoration-none">Features</a></li>
-          </ul>
+
+        <!-- Feature 2: Automated Course Enrollment -->
+        <div class="col-md-6 col-lg-4">
+          <div class="editorial-card h-100 accent-navy anime-card p-4">
+            <div class="d-inline-flex p-3 rounded-3 mb-4" style="color: var(--brand-navy); background: #DBEAFE;">
+              <i class="fa-solid fa-book-bookmark fs-4"></i>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="mono-tag" style="background:#DBEAFE; color:#1E40AF;">Academics</span>
+              <span class="small text-muted font-monospace">Capacity Engine</span>
+            </div>
+            <h4 class="font-serif fw-bold mb-2">Course Enrollment & Seat Quotas</h4>
+            <p class="text-muted small">
+              Real-time seat quotas, credit limits, atomic capacity tracking, and student drop/add workflows that guarantee class caps are strictly enforced without race conditions.
+            </p>
+          </div>
+        </div>
+
+        <!-- Feature 3: Facility Reservation Engine -->
+        <div class="col-md-6 col-lg-4">
+          <div class="editorial-card h-100 accent-sage anime-card p-4">
+            <div class="d-inline-flex p-3 rounded-3 mb-4" style="color: var(--brand-sage); background: var(--brand-sage-light);">
+              <i class="fa-solid fa-building-columns fs-4"></i>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="mono-tag" style="background:#DCFCE7; color:#166534;">Campus Facilities</span>
+              <span class="small text-muted font-monospace">Zero Collisions</span>
+            </div>
+            <h4 class="font-serif fw-bold mb-2">Conflict-Free Facility Booking</h4>
+            <p class="text-muted small">
+              Intelligent reservation manager for Computer Labs, Seminar Halls, Study Cubicles, and Sports Grounds with mathematical time-overlap collision prevention and administrative approvals.
+            </p>
+          </div>
+        </div>
+
+        <!-- Feature 4: Academic Timetables -->
+        <div class="col-md-6 col-lg-4">
+          <div class="editorial-card h-100 accent-terracotta anime-card p-4">
+            <div class="d-inline-flex p-3 rounded-3 mb-4" style="color: var(--brand-terracotta); background: var(--brand-terracotta-light);">
+              <i class="fa-solid fa-calendar-days fs-4"></i>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="mono-tag" style="background:#FFEDD5; color:#9A3412;">Scheduling</span>
+              <span class="small text-muted font-monospace">Weekly Matrix</span>
+            </div>
+            <h4 class="font-serif fw-bold mb-2">Academic Timetable Matrix</h4>
+            <p class="text-muted small">
+              Semester schedule resolution displaying days, times, lecture halls, and assigned professors with personalized daily schedules and attendance quick-links for faculty.
+            </p>
+          </div>
+        </div>
+
+        <!-- Feature 5: Grievance & Support Helpdesk -->
+        <div class="col-md-6 col-lg-4">
+          <div class="editorial-card h-100 accent-navy anime-card p-4">
+            <div class="d-inline-flex p-3 rounded-3 mb-4" style="color: var(--brand-navy); background: #DBEAFE;">
+              <i class="fa-solid fa-headset fs-4"></i>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="mono-tag" style="background:#E0E7FF; color:#3730A3;">Student Support</span>
+              <span class="small text-muted font-monospace">Grievance Desk</span>
+            </div>
+            <h4 class="font-serif fw-bold mb-2">Support & Grievance Helpdesk</h4>
+            <p class="text-muted small">
+              Categorized ticket tracking (Academic, Technical, Facility) with administrator response notes, state transitions (Open, In Progress, Resolved), and real-time student updates.
+            </p>
+          </div>
+        </div>
+
+        <!-- Feature 6: Campus Governance & Noticeboard -->
+        <div class="col-md-6 col-lg-4">
+          <div class="editorial-card h-100 accent-sage anime-card p-4">
+            <div class="d-inline-flex p-3 rounded-3 mb-4" style="color: var(--brand-sage); background: var(--brand-sage-light);">
+              <i class="fa-solid fa-bullhorn fs-4"></i>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="mono-tag" style="background:#F1F5F9; color:#334155;">Governance</span>
+              <span class="small text-muted font-monospace">Campus Notices</span>
+            </div>
+            <h4 class="font-serif fw-bold mb-2">Administrative Governance & Notices</h4>
+            <p class="text-muted small">
+              Unified command center for campus administrators to manage user directories, approve facility requests, curate curriculum courses, and broadcast official campus-wide announcements.
+            </p>
+          </div>
         </div>
       </div>
-      <hr class="my-4 border-secondary">
-      <div class="text-center text-white-50">
-        <small>&copy; 2026 CampusConnect. Built with modern web technologies.</small>
+    </div>
+  </section>
+
+  <!-- Stakeholder Breakdown: 3 Personas -->
+  <section id="stakeholders" class="py-5" style="background: var(--canvas-subtle); border-top: 1px solid var(--border-editorial); border-bottom: 1px solid var(--border-editorial);">
+    <div class="container py-4">
+      <div class="text-center mb-5 pb-2">
+        <span class="mono-tag bg-white text-dark border">Role-Based Experiences</span>
+        <h2 class="display-6 font-serif mt-2 mb-3">Designed for Every Campus Stakeholder</h2>
+        <p class="text-muted mx-auto" style="max-width: 600px;">
+          CampusConnect provides tailored, role-specific portals built on identical security and architecture foundations.
+        </p>
+      </div>
+
+      <div class="row g-4">
+        <!-- Student Persona -->
+        <div class="col-lg-4">
+          <div class="editorial-card p-4 h-100 bg-white shadow-sm anime-card">
+            <div class="d-flex align-items-center gap-3 mb-3">
+              <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold" style="width: 44px; height: 44px; background: var(--brand-terracotta);">
+                <i class="fa-solid fa-user-graduate"></i>
+              </div>
+              <div>
+                <h4 class="font-serif fw-bold mb-0">Students</h4>
+                <small class="text-muted">Academic self-service workspace</small>
+              </div>
+            </div>
+            <ul class="list-unstyled small text-muted d-flex flex-column gap-2 mb-4" style="line-height: 1.6;">
+              <li><i class="fa-solid fa-check text-success me-2"></i>Enroll and drop semester courses with live capacity</li>
+              <li><i class="fa-solid fa-check text-success me-2"></i>Monitor personal attendance pulse against 75% rule</li>
+              <li><i class="fa-solid fa-check text-success me-2"></i>Reserve study rooms and campus computer labs</li>
+              <li><i class="fa-solid fa-check text-success me-2"></i>View daily timetables and file grievance tickets</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Faculty Persona -->
+        <div class="col-lg-4">
+          <div class="editorial-card p-4 h-100 bg-white shadow-sm anime-card">
+            <div class="d-flex align-items-center gap-3 mb-3">
+              <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold" style="width: 44px; height: 44px; background: var(--brand-navy);">
+                <i class="fa-solid fa-chalkboard-user"></i>
+              </div>
+              <div>
+                <h4 class="font-serif fw-bold mb-0">Faculty Members</h4>
+                <small class="text-muted">Teaching & compliance terminal</small>
+              </div>
+            </div>
+            <ul class="list-unstyled small text-muted d-flex flex-column gap-2 mb-4" style="line-height: 1.6;">
+              <li><i class="fa-solid fa-check text-success me-2"></i>Mark daily session attendance with 1-click bulk actions</li>
+              <li><i class="fa-solid fa-check text-success me-2"></i>Inspect exam eligibility risk badges (<75% warning)</li>
+              <li><i class="fa-solid fa-check text-success me-2"></i>Export class attendance reports directly to CSV</li>
+              <li><i class="fa-solid fa-check text-success me-2"></i>Distribute course handouts and broadcast class notices</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Administrator Persona -->
+        <div class="col-lg-4">
+          <div class="editorial-card p-4 h-100 bg-white shadow-sm anime-card">
+            <div class="d-flex align-items-center gap-3 mb-3">
+              <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold" style="width: 44px; height: 44px; background: var(--brand-sage);">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+              <div>
+                <h4 class="font-serif fw-bold mb-0">Administrators</h4>
+                <small class="text-muted">Operations & governance console</small>
+              </div>
+            </div>
+            <ul class="list-unstyled small text-muted d-flex flex-column gap-2 mb-4" style="line-height: 1.6;">
+              <li><i class="fa-solid fa-check text-success me-2"></i>Approve or reject student facility reservation requests</li>
+              <li><i class="fa-solid fa-check text-success me-2"></i>Manage student and faculty account directories</li>
+              <li><i class="fa-solid fa-check text-success me-2"></i>Resolve support desk grievances with official updates</li>
+              <li><i class="fa-solid fa-check text-success me-2"></i>Oversee curriculum offerings and system-wide metrics</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-5">
+        <a href="login.html" class="btn-editorial-primary px-5 py-3 fw-bold">
+          Sign In to Your Portal <i class="fa-solid fa-arrow-right ms-2"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architectural Showcase Section -->
+  <section id="architecture" class="py-5" style="border-top: 1px solid var(--border-editorial);">
+    <div class="container py-4">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-5">
+          <span class="mono-tag bg-white text-dark border">Engineered Rigor</span>
+          <h2 class="display-6 font-serif mt-2 mb-3">Strict 4-Tier Layered Architecture</h2>
+          <p class="text-muted mb-4">
+            Designed for Software Development & Architecture (SDA) standards. The user interface never communicates directly with the database—every transaction flows strictly through decoupled contracts.
+          </p>
+          
+          <div class="d-flex flex-column gap-3">
+            <div class="d-flex align-items-start gap-3">
+              <div class="p-2 rounded bg-white border text-primary">
+                <i class="fa-solid fa-desktop"></i>
+              </div>
+              <div>
+                <strong class="d-block text-dark">1. Presentation Tier</strong>
+                <small class="text-muted">Vanilla HTML5/JS/jQuery client + Express 5.x API controllers.</small>
+              </div>
+            </div>
+            <div class="d-flex align-items-start gap-3">
+              <div class="p-2 rounded bg-white border text-primary">
+                <i class="fa-solid fa-gears"></i>
+              </div>
+              <div>
+                <strong class="d-block text-dark">2. Business Logic Tier</strong>
+                <small class="text-muted">Enforces booking collision detection, attendance rules, and course capacity ceilings.</small>
+              </div>
+            </div>
+            <div class="d-flex align-items-start gap-3">
+              <div class="p-2 rounded bg-white border text-primary">
+                <i class="fa-solid fa-database"></i>
+              </div>
+              <div>
+                <strong class="d-block text-dark">3. Data Access & Persistence Tier</strong>
+                <small class="text-muted">Repository abstractions over MongoDB & Mongoose schemas.</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-7">
+          <div class="editorial-card bg-white p-4 font-monospace shadow-sm">
+            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+              <span class="text-muted small">Architecture Data Flow</span>
+              <span class="mono-tag" style="background:#E2E8F0;">REST / JSON</span>
+            </div>
+            <pre class="mb-0 text-dark" style="font-size: 0.82rem; line-height: 1.5;">
+Browser (HTML / JS / Anime.js)
+       │ (HTTP POST /api/attendance)
+       ▼
+[ Presentation Layer ]  ──> attendanceController.js
+       │ (markAttendance)
+       ▼
+[ Business Logic Layer ] ──> Idempotent date reconciliation & validation
+       │   ├── checkThresholds()
+       │   └── enforceExamEligibility()
+       ▼
+[ Data Access Layer ]   ──> Attendance.insertMany() / Repository
+       │ (Mongoose ODM Queries)
+       ▼
+[ Database Layer ]      ──> MongoDB / Embedded In-Memory Engine</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Editorial Footer -->
+  <footer class="py-5" style="background: #FFFFFF; border-top: 1px solid var(--border-editorial);">
+    <div class="container py-3">
+      <div class="row g-4 align-items-center justify-content-between">
+        <div class="col-md-6">
+          <div class="d-flex align-items-center gap-2 mb-2">
+            <div class="brand-icon-editorial" style="width: 28px; height: 28px; font-size: 0.8rem;">
+              <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <h5 class="font-serif mb-0 fw-bold">CampusConnect</h5>
+          </div>
+          <p class="text-muted small mb-0">
+            Software Development and Architecture (SDA) Semester Engineering Project.
+          </p>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <a href="login.html" class="text-decoration-none text-muted small me-3 fw-semibold">
+            <i class="fa-solid fa-arrow-right-to-bracket me-1"></i> Sign In to Portal
+          </a>
+          <a href="https://github.com/mhamzashahidw/CampusConnect" target="_blank" class="text-decoration-none text-muted small">
+            <i class="fa-brands fa-github me-1"></i> Repository
+          </a>
+        </div>
+      </div>
+      <hr class="my-4" style="border-color: var(--border-editorial-subtle);">
+      <div class="text-center text-muted small">
+        &copy; 2026 CampusConnect. Built with modern web architecture and Anime.js.
       </div>
     </div>
   </footer>
 
+  <!-- Scripts: JQuery, Bootstrap, Anime.js, and Custom Animations -->
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/anime.min.js"></script>
+  <script src="js/animations.js"></script>
 </body>
 </html>

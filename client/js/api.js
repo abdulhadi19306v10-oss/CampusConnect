@@ -21,6 +21,7 @@ const API = {
   enrollCourse: (courseId) => $.post(`${API_URL}/courses/enroll`, { courseId }),
   dropCourse: (courseId) => $.ajax({ url: `${API_URL}/courses/drop/${courseId}`, type: 'DELETE' }),
   createCourse: (data) => $.post(`${API_URL}/courses`, data),
+  getCourseStudents: (courseId) => $.get(`${API_URL}/courses/${courseId}/students`),
   
   // Facilities
   getFacilities: () => $.get(`${API_URL}/bookings/facilities`),
@@ -44,6 +45,13 @@ const API = {
   createAnnouncement: (data) => $.post(`${API_URL}/announcements`, data),
   deleteAnnouncement: (id) => $.ajax({ url: `${API_URL}/announcements/${id}`, type: 'DELETE' }),
   
+  // Attendance
+  markAttendance: (data) => $.ajax({ url: `${API_URL}/attendance`, type: 'POST', data: JSON.stringify(data), contentType: 'application/json' }),
+  getMyAttendance: () => $.get(`${API_URL}/attendance/my-attendance`),
+  getCourseAttendanceStats: (courseId) => $.get(`${API_URL}/attendance/course/${courseId}/stats`),
+  getAttendanceByDate: (courseId, date) => $.get(`${API_URL}/attendance/course/${courseId}/date/${date}`),
+  getCourseAttendanceHistory: (courseId) => $.get(`${API_URL}/attendance/course/${courseId}/history`),
+
   // Admin
   getStats: () => $.get(`${API_URL}/admin/stats`),
   getStudents: () => $.get(`${API_URL}/admin/students`),

@@ -2,104 +2,138 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Facility Booking - CampusConnect</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facility Booking — CampusConnect</title>
+  
+  <!-- Bootstrap 5 & FontAwesome -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Editorial Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Design System CSS -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container-fluid px-4">
-      <a class="navbar-brand" href="dashboard.html"><i class="fa-solid fa-graduation-cap me-2"></i>CampusConnect</a>
-      <div class="d-flex align-items-center">
-        <a href="index.html" class="btn btn-sm btn-outline-secondary me-3"><i class="fa-solid fa-house"></i> Home</a>
-        <span class="me-3 fw-medium text-secondary user-name">Student</span>
-        <button id="logoutBtn" class="btn btn-outline-danger btn-sm">Logout</button>
+      <a class="navbar-brand" href="dashboard.html">
+        <div class="brand-icon-editorial">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        CampusConnect
+      </a>
+      
+      <div class="d-flex align-items-center gap-3">
+        <span class="mono-tag bg-white text-muted border d-none d-sm-inline-block">Campus Services</span>
+        <span class="fw-semibold text-dark user-name small d-none d-md-inline">Student</span>
+        <button id="logoutBtn" class="btn-editorial-outline btn-sm py-1 px-3" style="font-size: 0.82rem;">Logout</button>
       </div>
     </div>
   </nav>
 
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-2 d-none d-md-block sidebar px-0">
+      <!-- Sidebar -->
+      <div class="col-md-2 d-none d-md-block sidebar-editorial">
         <div class="nav flex-column">
-          <a class="nav-link" href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
-          <a class="nav-link" href="courses.html"><i class="fa-solid fa-book"></i> Courses</a>
+          <a class="nav-link" href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Overview</a>
+          <a class="nav-link" href="courses.html"><i class="fa-solid fa-book-bookmark"></i> Courses</a>
           <a class="nav-link" href="timetable.html"><i class="fa-solid fa-calendar-days"></i> Timetable</a>
-          <a class="nav-link active" href="bookings.html"><i class="fa-solid fa-building"></i> Facilities</a>
-          <a class="nav-link" href="complaints.html"><i class="fa-solid fa-comment-dots"></i> Complaints</a>
-          <a class="nav-link" href="announcements.html"><i class="fa-solid fa-bullhorn"></i> Announcements</a>
+          <a class="nav-link active" href="bookings.html"><i class="fa-solid fa-building-columns"></i> Facilities</a>
+          <a class="nav-link" href="complaints.html"><i class="fa-solid fa-comment-dots"></i> Support Desk</a>
+          <a class="nav-link" href="announcements.html"><i class="fa-solid fa-bullhorn"></i> Noticeboard</a>
         </div>
       </div>
 
-      <div class="col-md-10 dashboard-content bg-light">
+      <!-- Main Content -->
+      <div class="col-md-10 p-4 p-md-5">
         <div id="alertContainer"></div>
 
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-2 border-bottom border-light-subtle gap-3">
+          <div>
+            <span class="mono-tag" style="background: var(--brand-terracotta-light); color: var(--brand-terracotta);">Resource Reservations</span>
+            <h1 class="font-serif display-6 mb-1 fw-bold mt-1">Facility Booking & Laboratories</h1>
+            <p class="text-muted small mb-0">Reserve specialized campus spaces with automatic schedule conflict prevention.</p>
+          </div>
+          <span class="badge-status approved">
+            <i class="fa-solid fa-bolt me-1"></i> Conflict Engine Active
+          </span>
+        </div>
+
         <div class="row g-4">
-          <div class="col-md-4">
-            <div class="card h-100">
-              <div class="card-header bg-white pt-4 pb-0 border-bottom-0">
-                <h5 class="fw-bold">New Booking</h5>
-              </div>
-              <div class="card-body">
-                <form id="bookingForm">
-                  <div class="mb-3">
-                    <label class="form-label text-muted fw-semibold">Facility</label>
-                    <select class="form-select bg-light" id="facilityId" required></select>
+          <!-- Reservation Form (Left) -->
+          <div class="col-lg-5">
+            <div class="editorial-card p-4 anime-card h-100">
+              <h4 class="font-serif fw-bold mb-1">New Reservation</h4>
+              <p class="text-muted small mb-4">Select date, time block, and stated purpose.</p>
+
+              <form id="bookingForm">
+                <div class="mb-3">
+                  <label class="form-label text-muted small fw-semibold">FACILITY ROOM</label>
+                  <select class="form-select form-editorial" id="facilityId" required>
+                    <option value="">Loading facilities...</option>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label text-muted small fw-semibold">RESERVATION DATE</label>
+                  <input type="date" class="form-control form-editorial" id="date" required>
+                </div>
+
+                <div class="row g-2 mb-3">
+                  <div class="col-6">
+                    <label class="form-label text-muted small fw-semibold">START TIME</label>
+                    <input type="time" class="form-control form-editorial" id="startTime" required>
                   </div>
-                  <div class="mb-3">
-                    <label class="form-label text-muted fw-semibold">Date</label>
-                    <input type="date" class="form-control bg-light" id="date" required>
+                  <div class="col-6">
+                    <label class="form-label text-muted small fw-semibold">END TIME</label>
+                    <input type="time" class="form-control form-editorial" id="endTime" required>
                   </div>
-                  <div class="row">
-                    <div class="col-6 mb-3">
-                      <label class="form-label text-muted fw-semibold">Start Time</label>
-                      <input type="time" class="form-control bg-light" id="startTime" required>
-                    </div>
-                    <div class="col-6 mb-3">
-                      <label class="form-label text-muted fw-semibold">End Time</label>
-                      <input type="time" class="form-control bg-light" id="endTime" required>
-                    </div>
-                  </div>
-                  <div class="mb-4">
-                    <label class="form-label text-muted fw-semibold">Purpose</label>
-                    <textarea class="form-control bg-light" id="purpose" rows="2" required></textarea>
-                  </div>
-                  <button type="submit" class="btn btn-primary w-100 fw-bold">Submit Request</button>
-                </form>
-              </div>
+                </div>
+
+                <div class="mb-4">
+                  <label class="form-label text-muted small fw-semibold">ACADEMIC PURPOSE</label>
+                  <textarea class="form-control form-editorial" id="purpose" rows="3" required placeholder="e.g. FYP project testing, Study group session, Software demo..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-editorial-primary w-100 py-3 fw-bold">
+                  Submit Reservation Request <i class="fa-solid fa-arrow-right ms-2"></i>
+                </button>
+              </form>
             </div>
           </div>
-          
-          <div class="col-md-8">
-            <div class="card h-100">
-              <div class="card-header bg-white pt-4 pb-0 border-bottom-0">
-                <h5 class="fw-bold">My Bookings</h5>
-              </div>
-              <div class="card-body">
-                
-            <div class="mb-3 d-flex justify-content-end table-search-container">
-              <div class="input-group" style="width: 250px;">
-                <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-search text-muted"></i></span>
-                <input type="text" class="form-control border-start-0 bg-light page-search" placeholder="Search...">
-              </div>
-            </div>
-            <div class="table-responsive">
-                  <table class="table table-hover align-middle">
-                    <thead class="table-light">
-                      <tr>
-                        <th>Facility</th>
-                        <th>Date & Time</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody id="myBookingsTable">
-                      <tr><td colspan="4" class="text-center">Loading...</td></tr>
-                    </tbody>
-                  </table>
+
+          <!-- My Bookings Table (Right) -->
+          <div class="col-lg-7">
+            <div class="editorial-card p-4 anime-card h-100">
+              <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-light-subtle">
+                <h4 class="font-serif fw-bold mb-0">My Reservations</h4>
+                <div class="input-group" style="max-width: 220px;">
+                  <span class="input-group-text bg-white border-end-0" style="border-color: var(--border-editorial);"><i class="fa-solid fa-search text-muted small"></i></span>
+                  <input type="text" class="form-control form-editorial border-start-0 py-1" id="bookingSearch" placeholder="Filter...">
                 </div>
+              </div>
+
+              <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                  <thead style="background: var(--canvas-subtle); border-bottom: 2px solid var(--border-editorial);">
+                    <tr>
+                      <th class="py-3 font-serif">Facility</th>
+                      <th class="py-3 font-serif">Date & Slot</th>
+                      <th class="py-3 font-serif">Status</th>
+                      <th class="py-3 font-serif text-end">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="myBookingsTable">
+                    <tr><td colspan="4" class="text-center py-4 text-muted">Loading reservations...</td></tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -109,26 +143,34 @@
     </div>
   </div>
 
+  <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  
+  <script src="js/anime.min.js"></script>
+  <script src="js/animations.js"></script>
   <script src="js/api.js"></script>
   <script src="js/auth.js"></script>
+
   <script>
     $(document).ready(function() {
       // Set min date to today
       const today = new Date().toISOString().split('T')[0];
       $('#date').attr('min', today);
+      $('#date').val(today);
 
       loadFacilities();
       loadBookings();
 
       function loadFacilities() {
         API.getFacilities().done(res => {
-          let html = '<option value="">Select a facility</option>';
-          res.data.forEach(f => {
-            if(f.isActive) html += `<option value="${f._id}">${f.name} (Cap: ${f.capacity})</option>`;
-          });
+          let html = '<option value="">Select a campus facility...</option>';
+          if (res.data) {
+            res.data.forEach(f => {
+              if (f.isActive) {
+                html += `<option value="${f._id}">${f.name} — (${f.type}, Cap: ${f.capacity})</option>`;
+              }
+            });
+          }
           $('#facilityId').html(html);
         });
       }
@@ -136,24 +178,38 @@
       function loadBookings() {
         API.getMyBookings().done(res => {
           let html = '';
-          if(res.data.length === 0) html = '<tr><td colspan="4" class="text-center">No bookings found.</td></tr>';
-          res.data.forEach(b => {
-            let badge = 'secondary';
-            if(b.status === 'APPROVED') badge = 'success';
-            if(b.status === 'REJECTED' || b.status === 'CANCELLED') badge = 'danger';
-            if(b.status === 'PENDING') badge = 'warning';
+          if (!res.data || res.data.length === 0) {
+            html = '<tr><td colspan="4" class="text-center py-4 text-muted">No reservations found. Use the form to request a facility.</td></tr>';
+          } else {
+            res.data.forEach(b => {
+              let badgeClass = 'pending';
+              if (b.status === 'APPROVED') badgeClass = 'approved';
+              if (b.status === 'REJECTED' || b.status === 'CANCELLED') badgeClass = 'rejected';
 
-            html += `<tr>
-              <td class="fw-bold">${b.facilityId?.name || 'Unknown'}</td>
-              <td>${b.date}<br><small class="text-muted">${b.startTime} - ${b.endTime}</small></td>
-              <td><span class="badge bg-${badge}">${b.status}</span></td>
-              <td>
-                ${(b.status === 'PENDING' || b.status === 'APPROVED') ? 
-                  `<button class="btn btn-sm btn-outline-danger cancel-btn" data-id="${b._id}">Cancel</button>` : 
-                  '-'}
-              </td>
-            </tr>`;
-          });
+              html += `
+                <tr class="booking-row">
+                  <td>
+                    <strong class="d-block font-serif text-dark">${b.facilityId ? b.facilityId.name : 'Facility'}</strong>
+                    <small class="text-muted">${b.purpose || 'Academic'}</small>
+                  </td>
+                  <td>
+                    <span class="mono-tag bg-white border text-dark">${b.date}</span>
+                    <small class="d-block text-muted mt-1">${b.startTime} - ${b.endTime}</small>
+                  </td>
+                  <td>
+                    <span class="badge-status ${badgeClass}">${b.status}</span>
+                  </td>
+                  <td class="text-end">
+                    ${(b.status === 'PENDING' || b.status === 'APPROVED') ? 
+                      `<button class="btn-editorial-outline btn-sm py-1 px-3 cancel-btn text-danger border-danger-subtle" data-id="${b._id}">
+                        Cancel
+                      </button>` : 
+                      '<span class="text-muted small">—</span>'}
+                  </td>
+                </tr>
+              `;
+            });
+          }
           $('#myBookingsTable').html(html);
         });
       }
@@ -167,36 +223,34 @@
           endTime: $('#endTime').val(),
           purpose: $('#purpose').val()
         };
-        
+
         API.createBooking(data).done(res => {
-          showAlert(res.message, 'success');
-          $('#bookingForm')[0].reset();
+          showAlert(res.message || 'Booking request submitted successfully!', 'success');
+          if (window.triggerCelebrationBurst) {
+            window.triggerCelebrationBurst(e.clientX, e.clientY);
+          }
+          $('#purpose').val('');
           loadBookings();
         }).fail(err => {
-          showAlert(err.responseJSON?.message || 'Error booking', 'danger');
+          showAlert(err.responseJSON?.message || 'Error submitting booking. Potential schedule conflict.', 'danger');
         });
       });
 
       $(document).on('click', '.cancel-btn', function() {
-        if(!confirm('Cancel this booking?')) return;
+        if (!confirm('Are you sure you want to cancel this booking?')) return;
         API.cancelBooking($(this).data('id')).done(res => {
-          showAlert(res.message, 'success');
+          showAlert(res.message || 'Reservation cancelled.', 'info');
           loadBookings();
         }).fail(err => {
-          showAlert('Failed to cancel', 'danger');
+          showAlert('Failed to cancel reservation.', 'danger');
         });
       });
-    });
-  </script>
 
-  <script>
-    $(document).ready(function() {
-      // Global Table Live Search
-      $('.page-search').on('keyup', function() {
-        const value = $(this).val().toLowerCase();
-        // find the closest table-responsive container which is a sibling of the search container
-        $(this).closest('.table-search-container').next('.table-responsive').find('tbody tr').filter(function() {
-          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      // Filter
+      $('#bookingSearch').on('keyup', function() {
+        const val = $(this).val().toLowerCase();
+        $('.booking-row').filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(val) > -1);
         });
       });
     });
